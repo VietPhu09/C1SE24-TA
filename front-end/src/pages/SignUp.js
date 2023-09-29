@@ -1,17 +1,20 @@
 import React from 'react'
-import img from '../assets/img/hoian.jpg'
+import boy from '../assets/img/register.png'
+import girl from '../assets/img/register2.png'
 import { FcGoogle } from 'react-icons/fc'
 import { BsFacebook } from 'react-icons/bs'
 import { Link } from 'react-router-dom'
 
 export const SignUp = () => {
   return (
-    <div className=' flex mt-20 flex-1 ml-10 mr-10'>
-      <div className=' flex-1'>
-        <img src={img} alt='Hoi An' />
+    <div className=' flex mt-20 flex-1 ml-10 mr-10 max-h-screen'>
+      <div className=' flex-1 flex items-center justify-center relative'>
+        <img src={boy} alt='Hoi An' className=' object-cover h-2/4'/>
+        <img src={girl} alt='Hoi An' className=' object-cover h-2/4'/>
+        <p className=' absolute top-0 uppercase font-bold text-6xl text-indigo-500'>start your journey by one click, explore beautiful world</p>
       </div>
-      <div className=' ml-10 flex-1 flex flex-col items-center'>
-        <h1 className=' text-4xl font-bold item'>Register</h1>
+      <div className=' ml-10 flex-1 flex flex-col items-center '>
+        <h1 className=' text-4xl font-bold item text-slate-700'>Register</h1>
         <form className='w-full py-3 flex flex-col mt-5'>
           <div className='flex'>
             <div className=' flex-1'>
