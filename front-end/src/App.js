@@ -1,24 +1,25 @@
-import logo from './logo.svg';
-import './App.css';
+import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from "react-router-dom";
+import RootLayout from '../src/layouts/RootLayout'
+import { Home } from './pages/Home'
+import { SignUp } from "./pages/SignUp";
+/*App là nơi chứa cách hoạt động của các Router 
+nơi điều khiển các component sẽ render khi gặp tên đường link tương ứng
+*/
+
+// 1. Tạo một biến const router để cấu hình customize router linh hoạt hơn
+const router = createBrowserRouter(
+  createRoutesFromElements(
+    <Route path="/" element={<RootLayout />}>
+      <Route index element={<Home />}></Route>
+      <Route path="signup" element={<SignUp />}></Route>
+    </Route>
+  )
+)
+
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <RouterProvider router={router} />
   );
 }
 
