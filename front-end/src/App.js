@@ -2,7 +2,7 @@ import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } 
 import RootLayout from '../src/layouts/RootLayout'
 import { Home } from './pages/Home'
 import { SignUp } from "./pages/SignUp";
-import {Login} from './pages/Login'
+import { Login } from './pages/Login'
 /*App là nơi chứa cách hoạt động của các Router 
 nơi điều khiển các component sẽ render khi gặp tên đường link tương ứng
 */
@@ -13,7 +13,7 @@ const router = createBrowserRouter(
     <Route path="/" element={<RootLayout />}>
       <Route index element={<Home />}></Route>
       <Route path="signup" element={<SignUp />}></Route>
-      <Route path="login" element={<Login/>}></Route>
+      <Route path="login" element={<Login />}></Route>
     </Route>
   )
 )
