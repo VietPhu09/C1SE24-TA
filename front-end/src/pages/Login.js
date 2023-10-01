@@ -1,11 +1,68 @@
-import React from 'react'
+import React, { useState } from 'react'
 import boy from '../assets/img/register.png'
 import girl from '../assets/img/register2.png'
 import { FcGoogle } from 'react-icons/fc'
 import { BsFacebook } from 'react-icons/bs'
-import { Link } from 'react-router-dom'
+import {BiShow, BiHide} from 'react-icons/bi'
+import { Link, useNavigate } from 'react-router-dom'
+import toast from 'react-hot-toast'
 
 export const Login = () => {
+  const navigate = useNavigate()
+  const API ="http://127.0.0.1:8000/"
+  const [showPassword, setShowPassword] = useState(false)
+  const [data, setData] = useState({
+    username: "",
+    password: ""
+  })
+  
+  const handleOnchange = (e) => {
+    e.preventDefault()
+    const {name, value} = e.target
+    setData((prev)=>{
+      return{
+        ...prev,
+        [name]:value
+      }
+    })
+    console.log(data)
+  }
+
+  const handleSubmit = async(e) => {
+    e.preventDefault()
+    const {username, password} = data
+    if(username && password){
+      const fetchData = await fetch(`${API}login/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      })
+      const dataRes = await fetchData.json()
+      console.log(dataRes)
+      if(dataRes.message){
+        toast.success(dataRes.message)
+        toast(`Welcome back! ${dataRes.user}`,
+        {
+          icon: '👏',
+          style: {
+            borderRadius: '10px'
+          },
+        })
+        navigate('/')
+      }
+      else if(dataRes.error)
+        toast.error(dataRes.error)
+    }
+    else{
+      toast.error("Please enter require field")
+    }
+  }
+
+  const handleShowPassword = () =>{
+    setShowPassword(prev => !prev)
+  }
   return (
     <div className=' flex mt-20 flex-1 ml-10 mr-10 max-h-screen'>
       <div className=' flex-1 flex items-center justify-center relative'>
@@ -15,25 +72,32 @@ export const Login = () => {
       </div>
       <div className=' ml-10 flex-1 flex flex-col items-center '>
         <h1 className=' text-4xl font-bold item text-slate-700'>Login</h1>
-        <form className='w-full py-3 flex flex-col mt-5'>
+        <form className='w-full py-3 flex flex-col mt-5' onSubmit={handleSubmit}>
           {/* User name */}
           <label className=' font-medium text-slate-700'>User Name</label>
           <input
             type='text'
             id='username'
             name='username'
+            value={data.username}
+            onChange={handleOnchange}
             placeholder='User name'
             className='mt-1 mb-5 w-full border border-slate-300 px-2 py-2 rounded focus-within:outline-blue-300'
           />
           {/* Password */}
           <label className=' font-medium text-slate-700'>Password</label>
+          <div className='relative'>
           <input
-            type='password'
+            type={ showPassword ? 'text':'password'} 
             id='password'
             name='password'
+            value={data.password}
+            onChange={handleOnchange}
             placeholder='Password'
             className='mt-1 mb-5 w-full border border-slate-300 px-2 py-2 rounded focus-within:outline-blue-300'
           />
+          <span className='flex text-xl cursor-pointer absolute top-4 right-2' onClick={handleShowPassword}>{showPassword ? <BiShow/> : <BiHide/>}</span>
+          </div>
           <div className='flex items-center justify-between'>
             <div>
               <input type='checkbox' className=' shadow-md'/>
