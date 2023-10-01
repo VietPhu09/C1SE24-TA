@@ -14,7 +14,7 @@ const RootLayout = () => {
     return (
         <div className="root-layout">
             <header>
-                <nav className="bg-white p-5 border-b-2">
+                <nav className="bg-white p-4 border-b-2">
                     <div className="max-w-7xl mx-auto flex justify-between" >
                         {/* Ảnh Logo Trip Advisor */}
                         <div className="flex items-center md:space-x-2 space-x-3">
