@@ -1,7 +1,12 @@
 import React from 'react'
 import HeroSection from '../components/Home_Components/HeroSection'
 
+import HomeCarousel from '../components/Home_Components/HomeCarousel';
+
 export const Home = () => {
+
+
+
   return (
     <div>
       {/* Hero Section */}
@@ -10,8 +15,8 @@ export const Home = () => {
       </div>
 
       {/* Carousel Section */}
-      <section className="carousel-container">
-
+      <section>
+        <HomeCarousel />
       </section>
 
       {/* Info Section */}

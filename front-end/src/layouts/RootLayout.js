@@ -1,7 +1,6 @@
 import { NavLink, Outlet } from "react-router-dom";
 import { GiHamburgerMenu } from 'react-icons/gi'
 import { useState } from "react";
-import { SiTripadvisor } from 'react-icons/si'
 import logo from '../assets/img/logo.png'
 //Root layout là nơi sẽ render ra giao diện của trang NavBar
 const RootLayout = () => {
