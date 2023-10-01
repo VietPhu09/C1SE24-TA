@@ -2,6 +2,7 @@ import { NavLink, Outlet } from "react-router-dom";
 import { GiHamburgerMenu } from 'react-icons/gi'
 import { useState } from "react";
 import { SiTripadvisor } from 'react-icons/si'
+import logo from '../assets/img/logo.png'
 //Root layout là nơi sẽ render ra giao diện của trang NavBar
 const RootLayout = () => {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -17,7 +18,8 @@ const RootLayout = () => {
                     <div className="max-w-7xl mx-auto flex justify-between" >
                         {/* Ảnh Logo Trip Advisor */}
                         <div className="flex items-center md:space-x-2 space-x-3">
-                            <SiTripadvisor className="text-5xl" />
+                            <img src={logo} alt="Trip Advisor Logo" className="w-10 h-10 md:w-16 md:h-16 text-5xl" />
+                            {/* <SiTripadvisor className="text-5xl" /> */}
                             <span className="text-xl md:text-2xl font-bold">Trip Advisor</span>
                         </div>
 
