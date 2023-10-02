@@ -34,9 +34,13 @@ const HomeCarousel = () => {
         />)
 
     return (
-        <Carousel responsive={responsive} className='mt-8 container mx-auto pb-6'>
-            {tripCards}
-        </Carousel>
+        <div className='max-w-7xl p-7 mx-auto'>
+            <h1 class="mb-4 sm:text-3xl font-bold leading-none tracking-tight text-gray-900 md:text-4xl text-center pt-6">We invest in the world’s potential</h1>
+            <p class="mb-9 text-base font-normal text-gray-500 lg:text-base sm:px-16 xl:px-48 dark:text-gray-400 text-center py-2 px-8 ">Where ever you want to go , let us make it happens.</p>
+            <Carousel responsive={responsive} className='mt-8 container mx-auto pb-10' showDots={true}>
+                {tripCards}
+            </Carousel>
+        </div>
     )
 }
 
