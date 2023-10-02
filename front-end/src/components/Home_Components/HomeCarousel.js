@@ -36,10 +36,6 @@ const HomeCarousel = () => {
     return (
         <Carousel responsive={responsive} className='mt-8 container mx-auto pb-6'>
             {tripCards}
-            {/* <div><TripCard /></div>
-            <div><TripCard /></div>
-            <div><TripCard /></div>
-            <div><TripCard /></div> */}
         </Carousel>
     )
 }

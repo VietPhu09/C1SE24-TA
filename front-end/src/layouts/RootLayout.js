@@ -35,9 +35,9 @@ const RootLayout = () => {
                             <button className="text-black font-bold text-lg hover:text-blue-500">
                                 <NavLink to='login'>Login</NavLink>
                             </button>
-                            <button className="bg-[#0f172a] hover:bg-[#2529d7] text-white font-bold py-2 px-4 border-b-4 border-[#000000] hover:border-[#10127e] rounded ">
-                                <NavLink to='signup'>Sign Up</NavLink>
-                            </button>
+                            <NavLink to='signup' className="bg-[#0f172a] hover:bg-[#2529d7] text-white font-bold py-2 px-4 border-b-4 border-[#000000] hover:border-[#10127e] rounded ">
+                                Sign Up
+                            </NavLink>
                         </div>
 
                         {/* ##### GIAO DIỆN MOBILE Ở ĐÂY ##### */}
@@ -55,9 +55,9 @@ const RootLayout = () => {
                             <button className="p-2 text-left font-semibold hover:bg-slate-200 rounded-md border-l-4 border-slate-200 hover:shadow-md hover:transition duration-100 ease-in-out">
                                 <NavLink to='login'>Login</NavLink>
                             </button>
-                            <button className="p-2 text-left font-semibold hover:bg-slate-200 rounded-md border-l-4 border-slate-200 hover:shadow-md hover:transition duration-100 ease-in-out">
-                                <NavLink to='signup'>Sign Up</NavLink>
-                            </button>
+                            <NavLink to='signup' className="p-2 text-left font-semibold hover:bg-slate-200 rounded-md border-l-4 border-slate-200 hover:shadow-md hover:transition duration-100 ease-in-out">
+                                Sign Up
+                            </NavLink>
                         </div>
                     }
 
