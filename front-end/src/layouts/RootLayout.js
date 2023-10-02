@@ -13,11 +13,11 @@ const RootLayout = () => {
     return (
         <div className="root-layout">
             <header>
-                <nav className="bg-white p-4 border-b-2">
+                <nav className="bg-white p-3 border-b-2">
                     <div className="max-w-7xl mx-auto flex justify-between" >
                         {/* Ảnh Logo Trip Advisor */}
                         <div className="flex items-center md:space-x-2 space-x-3">
-                            <img src={logo} alt="Trip Advisor Logo" className="w-10 h-10 md:w-16 md:h-16 text-5xl" />
+                            <img src={logo} alt="Trip Advisor Logo" className="w-8 h-8 md:w-12 md:h-12 text-5xl" />
                             {/* <SiTripadvisor className="text-5xl" /> */}
                             <span className="text-xl md:text-2xl font-bold">Trip Advisor</span>
                         </div>
@@ -32,7 +32,7 @@ const RootLayout = () => {
 
                         {/* Các Buttons */}
                         <div className="hidden md:flex space-x-5 items-center">
-                            <button className="text-black font-bold text-lg">
+                            <button className="text-black font-bold text-lg hover:text-blue-500">
                                 <NavLink to='login'>Login</NavLink>
                             </button>
                             <button className="bg-[#0f172a] hover:bg-[#2529d7] text-white font-bold py-2 px-4 border-b-4 border-[#000000] hover:border-[#10127e] rounded ">

@@ -15,7 +15,7 @@ const HomeCarousel = () => {
         },
         tablet: {
             breakpoint: { max: 1024, min: 464 },
-            items: 1,
+            items: 2,
         },
         mobile: {
             breakpoint: { max: 464, min: 0 },
@@ -24,7 +24,7 @@ const HomeCarousel = () => {
     };
 
     return (
-        <Carousel responsive={responsive} className='mt-8 container mx-auto'>
+        <Carousel responsive={responsive} className='mt-8 container mx-auto pb-6'>
             <div><TripCard /></div>
             <div><TripCard /></div>
             <div><TripCard /></div>
