@@ -6,7 +6,7 @@ const TripCard = () => {
             class="block rounded-lg bg-white drop-shadow-md hover:drop-shadow-xl bg-white mx-4">
             <a href="#!">
                 <img
-                    class="rounded-t-lg"
+                    class="rounded-t-lg h-64 object-cover w-full"
                     src="https://tecdn.b-cdn.net/img/new/standard/nature/184.jpg"
                     alt="" />
             </a>
