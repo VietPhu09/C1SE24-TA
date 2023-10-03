@@ -3,6 +3,7 @@ import RootLayout from '../src/layouts/RootLayout'
 import { Home } from './pages/Home'
 import { SignUp } from "./pages/SignUp";
 import { Login } from './pages/Login'
+
 /*App là nơi chứa cách hoạt động của các Router 
 nơi điều khiển các component sẽ render khi gặp tên đường link tương ứng
 */
