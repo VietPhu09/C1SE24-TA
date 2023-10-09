@@ -1,7 +1,7 @@
 import React from 'react'
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
-import TripCard from './TripCard';
+import TripCard from './HomeCard/TripCard';
 import CarouselData from '../Home_Components/CarouselData'
 
 const HomeCarousel = () => {
@@ -27,6 +27,7 @@ const HomeCarousel = () => {
 
     const tripCards = CarouselData.map((item) =>
         <TripCard
+            id={item.id}
             name={item.namePlace}
             url={item.imageUrl}
             location={item.placeLocated}

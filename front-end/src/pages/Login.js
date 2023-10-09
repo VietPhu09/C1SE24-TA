@@ -6,9 +6,13 @@ import { BsFacebook } from 'react-icons/bs'
 import {BiShow, BiHide} from 'react-icons/bi'
 import { Link, useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast'
+import {useDispatch, useSelector} from 'react-redux'
+import {loginRedux} from '../redux/userSlice'
 
 export const Login = () => {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const userData = useSelector(state => state)
   const API ="http://127.0.0.1:8000/"
   const [showPassword, setShowPassword] = useState(false)
   const [data, setData] = useState({
@@ -25,7 +29,7 @@ export const Login = () => {
         [name]:value
       }
     })
-    console.log(data)
+    // console.log(data)
   }
 
   const handleSubmit = async(e) => {
@@ -40,17 +44,19 @@ export const Login = () => {
         body: JSON.stringify(data)
       })
       const dataRes = await fetchData.json()
-      console.log(dataRes)
+      console.log('user: ' + userData.user)
+      // console.log(dataRes)
       if(dataRes.message){
         toast.success(dataRes.message)
-        toast(`Welcome back! ${dataRes.user}`,
+        toast(`Welcome back! ${dataRes.user.username}`,
         {
           icon: '👏',
           style: {
             borderRadius: '10px'
           },
         })
-        navigate('/')
+        dispatch(loginRedux(dataRes))
+        // navigate('/')
       }
       else if(dataRes.error)
         toast.error(dataRes.error)
