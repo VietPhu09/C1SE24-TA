@@ -1,6 +1,6 @@
 import React from 'react'
 import HeroSection from '../components/Home_Components/HeroSection'
-
+import BlogSection from '../components/Home_Components/BlogSection';
 import HomeCarousel from '../components/Home_Components/HomeCarousel';
 
 export const Home = () => {
@@ -26,7 +26,7 @@ export const Home = () => {
 
       {/* Blog Section */}
       <section className="blog-container">
-
+        <BlogSection />
       </section>
 
       {/* Blog Section */}
