@@ -2,6 +2,10 @@ import React from 'react'
 import HeroSection from '../components/Home_Components/HeroSection'
 import BlogSection from '../components/Home_Components/BlogSection';
 import HomeCarousel from '../components/Home_Components/HomeCarousel';
+import InfoSection from '../components/Home_Components/InfoSection';
+import FeedBackSection from '../components/Home_Components/FeedBackSection';
+import FAQSection from '../components/Home_Components/FAQSection';
+import Footer from '../components/Home_Components/Footer';
 
 export const Home = () => {
 
@@ -21,7 +25,7 @@ export const Home = () => {
 
       {/* Info Section */}
       <section className="info-container">
-
+        <InfoSection />
       </section>
 
       {/* Blog Section */}
@@ -29,19 +33,19 @@ export const Home = () => {
         <BlogSection />
       </section>
 
-      {/* Blog Section */}
-      <section className="blog-container">
-
+      {/* FeedBack */}
+      <section className="feedback-container">
+        <FeedBackSection />
       </section>
 
       {/* FAQ Section */}
       <section className="faq-container">
-
+        <FAQSection />
       </section>
 
       {/* Footer Section */}
       <section className="info-container">
-
+        <Footer />
       </section>
     </div>
 

@@ -2,6 +2,7 @@ import { NavLink, Outlet } from "react-router-dom";
 import { GiHamburgerMenu } from 'react-icons/gi'
 import { useState } from "react";
 import logo from '../assets/img/logo.png'
+import { Toaster } from "react-hot-toast";
 //Root layout là nơi sẽ render ra giao diện của trang NavBar
 const RootLayout = () => {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -11,7 +12,10 @@ const RootLayout = () => {
     };
 
     return (
+
+
         <div className="root-layout">
+            <Toaster/>
             <header>
                 <nav className="bg-white p-3 border-b-2">
                     <div className="max-w-7xl mx-auto flex justify-between" >
@@ -32,11 +36,13 @@ const RootLayout = () => {
 
                         {/* Các Buttons */}
                         <div className="hidden md:flex space-x-5 items-center">
-                            <NavLink to='login' className="text-black font-bold text-lg hover:text-blue-500">
-                                Login
-                            </NavLink>
-                            <NavLink to='signup' className="bg-[#0f172a] hover:bg-[#2529d7] text-white font-bold py-2 px-4 border-b-4 border-[#000000] hover:border-[#10127e] rounded ">
-                                Sign Up
+                            <button className="text-black font-bold text-lg hover:text-blue-500">
+                                <NavLink to='login'>Login</NavLink>
+                            </button>
+                            <NavLink to='signup'>
+                                <button className="bg-[#0f172a] hover:bg-[#2529d7] text-white font-bold py-2 px-4 border-b-4 border-[#000000] hover:border-[#10127e] rounded ">
+                                    Sign up
+                                </button>
                             </NavLink>
                         </div>
 
