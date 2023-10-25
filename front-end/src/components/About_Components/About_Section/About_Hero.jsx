@@ -1,7 +1,7 @@
 import React from 'react'
 import { motion } from "framer-motion"
-import { slideIn, staggerContainer, textVariant } from '../../utils/motion'
-import styles from './AboutUs_Style/style'
+import { slideIn, staggerContainer, textVariant } from '../../../utils/motion'
+import styles from '../AboutUs_Style/style'
 function About_Hero() {
     return (
         // Hero Section About us Page
@@ -33,7 +33,7 @@ function About_Hero() {
                         <img
                             src='https://s19538.pcdn.co/wp-content/uploads/2021/07/road-trip.jpg'
                             alt='About us Pic'
-                            className='w-full sm:h-[500px] h-[350px] object-cover rounded-tl-[140px] z-10 relative'
+                            className='w-full sm:h-[500px] h-[350px] object-cover rounded-tl-[140px] rounded-br-[140px] z-10 relative'
                         >
                         </img>
                     </div>
