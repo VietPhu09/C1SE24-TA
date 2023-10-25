@@ -3,9 +3,6 @@ import { motion } from 'framer-motion';
 import { textContainer, textVariant2 } from '../../../utils/motion';
 
 export const TypingText = ({ title, textStyles }) => {
-    console.log('title:', title); // In giá trị title vào Console
-    console.log('textStyles:', textStyles); // In giá trị textStyles vào Console
-
     return (
         <motion.p
             variants={textContainer}
@@ -26,7 +23,7 @@ export const TitleText = ({ title, textStyles }) => {
             variants={textVariant2}
             initial="hidden"
             whileInView="show"
-            className={`mt-[8px] font-semibold md:text-[32px] text-[20px] text-[#7a7a7a] ${textStyles}`}
+            className={`mt-[8px] font-semibold md:text-[28px] text-[20px] text-[#7a7a7a] ${textStyles}`}
         >
             {title}
         </motion.p>

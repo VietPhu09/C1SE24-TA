@@ -1,28 +1,28 @@
 export const exploreWorlds = [
     {
         id: 'world-1',
-        imgUrl: '/planet-01.png',
-        title: 'The Hogwarts',
+        imgUrl: 'https://i.pinimg.com/564x/6f/44/d5/6f44d58aa670930d2b9cbb16e63d83ef.jpg',
+        title: 'Da Nang',
     },
     {
         id: 'world-2',
-        imgUrl: '/planet-02.png',
-        title: 'The Upside Down',
+        imgUrl: 'https://i.pinimg.com/564x/fb/97/b9/fb97b94a8a6e476b4e4e6d6e6ed4dba7.jpg',
+        title: 'Ha Noi',
     },
     {
         id: 'world-3',
-        imgUrl: '/planet-03.png',
-        title: 'Kadirojo Permai',
+        imgUrl: 'https://i.pinimg.com/564x/d8/4d/c5/d84dc52b6f34d70fae4d4ee3630e93cf.jpg',
+        title: 'Ha Tinh',
     },
     {
         id: 'world-4',
-        imgUrl: '/planet-04.png',
-        title: 'Paradise Island',
+        imgUrl: 'https://i.pinimg.com/564x/10/dc/f7/10dcf7fffe73c73461496d497d05340b.jpg',
+        title: 'Ho Chi Minh',
     },
     {
         id: 'world-5',
-        imgUrl: '/planet-05.png',
-        title: 'Hawkins Labs',
+        imgUrl: 'https://i.pinimg.com/564x/09/90/57/0990578a7a3d851146a3fa214b689d98.jpg',
+        title: 'Hoi An',
     },
 ];
 
