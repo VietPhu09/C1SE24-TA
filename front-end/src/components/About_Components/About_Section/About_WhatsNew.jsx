@@ -22,11 +22,12 @@ const About_WhatsNew = () => {
                     className="flex-[0.75] flex justify-center flex-col">
                     <TypingText title="| How Trip Advisor works" />
                     <TitleText title={<>What's new about Trip Advisor</>} />
-                    <div className='mt-[48px] flex flex-wrap justify-between max-w-[370px] gap-[24px]'>
-                        {newFeatures.map((item) => (
+                    <div className='mt-[48px] flex flex-wrap justify-between gap-[24px]'>
+                        {newFeatures.map((item, index) => (
                             <NewFeature
-                                key={item}
-                                {...newFeatures}
+                                key={item.title}
+                                {...item}
+                                number={index + 1}
                             />
                         ))}
                     </div>

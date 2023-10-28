@@ -1,3 +1,7 @@
+import izToUse from '../About_Constant_Data/easy.png'
+import zoomAnalytics from '../About_Constant_Data/analytics.png'
+
+
 export const exploreWorlds = [
     {
         id: 'world-1',
@@ -34,16 +38,16 @@ export const startingFeatures = [
 
 export const newFeatures = [
     {
-        imgUrl: '/vrpano.svg',
-        title: 'A new world',
+        imgUrl: izToUse,
+        title: 'Easy to use',
         subtitle:
-            'we have the latest update with new world for you to try never mind',
+            'We work hard to make you make trip easy to use , understand , simplify but smart',
     },
     {
-        imgUrl: '/headset.svg',
-        title: 'More realistic',
+        imgUrl: zoomAnalytics,
+        title: 'Easy to plan trip',
         subtitle:
-            'In the latest update, your eyes are narrow, making the world more realistic than ever',
+            'Our web will analyze and found what are the best places for you to travel and have fun',
     },
 ];
 
