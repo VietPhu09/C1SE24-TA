@@ -1,18 +1,25 @@
 import React from 'react'
-import { motion } from "framer-motion"
-import About_Hero from '../../components/About_Components/About_Section/About_Hero'
+import AboutHero from '../../components/About_Components/About_Section/AboutHero'
 import AboutContent from '../../components/About_Components/About_Section/AboutContent'
-import Explore from '../../components/About_Components/About_Section/Explore'
-import About_GetStarted from '../../components/About_Components/About_Section/About_GetStarted'
-import About_WhatsNew from '../../components/About_Components/About_Section/About_WhatsNew'
+import AboutExplore from '../../components/About_Components/About_Section/AboutExplore'
+import AboutGetStarted from '../../components/About_Components/About_Section/AboutGetStarted'
+import AboutWhatsNew from '../../components/About_Components/About_Section/AboutWhatsNew'
+import AboutWorld from '../../components/About_Components/About_Section/AboutWorld'
+import AboutInsight from '../../components/About_Components/About_Section/AboutInsight'
+import AboutFeedback from '../../components/About_Components/About_Section/AboutFeedBack'
+import AboutFooter from '../../components/About_Components/About_Section/AboutFooter'
 const About = () => {
   return (
     <>
-      <About_Hero />
+      <AboutHero />
       <AboutContent />
-      <Explore />
-      <About_GetStarted />
-      <About_WhatsNew />
+      <AboutExplore />
+      <AboutGetStarted />
+      <AboutWhatsNew />
+      <AboutWorld />
+      <AboutInsight />
+      <AboutFeedback />
+      <AboutFooter />
     </>
   )
 }

@@ -6,7 +6,7 @@ import { staggerContainer } from '../../../utils/motion'
 import { ExploreCard, TitleText, TypingText } from '../About_Mini_Components/index'
 import { exploreWorlds } from '../About_Constant_Data/About_Data'
 
-function Explore() {
+function AboutExplore() {
     const [active, setActive] = useState('world-2')
 
     return (
@@ -39,4 +39,4 @@ function Explore() {
     )
 }
 
-export default Explore
+export default AboutExplore

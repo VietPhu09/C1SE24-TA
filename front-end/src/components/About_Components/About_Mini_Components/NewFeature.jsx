@@ -4,7 +4,6 @@ import { motion } from "framer-motion"
 import { slideIn } from '../../../utils/motion'
 
 const NewFeature = ({ imgUrl, title, subtitle, number }) => {
-    console.log(imgUrl, title, subtitle, number)
     return (
         <motion.div
             variants={slideIn('up', 'tween', number * 0.4, 1.2)}

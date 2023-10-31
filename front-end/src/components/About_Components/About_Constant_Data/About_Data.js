@@ -1,6 +1,9 @@
 import izToUse from '../About_Constant_Data/easy.png'
 import zoomAnalytics from '../About_Constant_Data/analytics.png'
-
+import facebook from '../About_Constant_Data/facebook.png'
+import linkedin from '../About_Constant_Data/linkedin.png'
+import twitter from '../About_Constant_Data/twitter.png'
+import instagram from '../About_Constant_Data/instagram.png'
 
 export const exploreWorlds = [
     {
@@ -53,19 +56,19 @@ export const newFeatures = [
 
 export const insights = [
     {
-        imgUrl: '/planet-06.png',
+        imgUrl: 'https://publish.purewow.net/wp-content/uploads/sites/2/2019/04/most-beautiful-places-in-the-world-seljalandsfoss-iceland.png?fit=675%2C501',
         title: 'The launch of the Metaverse makes Elon musk ketar-ketir',
         subtitle:
             'Magna etiam tempor orci eu lobortis elementum nibh tellus molestie. Diam maecenas sed enim ut sem viverra alique.',
     },
     {
-        imgUrl: '/planet-07.png',
+        imgUrl: 'https://hips.hearstapps.com/hmg-prod/images/red-hot-air-balloons-over-jungle-nyaung-u-mandalay-royalty-free-image-1693419727.jpg?crop=0.681xw:1.00xh;0.272xw,0&resize=640:*',
         title: '7 tips to easily master the madness of the Metaverse',
         subtitle:
             'Vitae congue eu consequat ac felis donec. Et magnis dis parturient montes nascetur ridiculus mus. Convallis tellus id interdum',
     },
     {
-        imgUrl: '/planet-08.png',
+        imgUrl: 'https://media.timeout.com/images/106032809/750/562/image.jpg',
         title: 'With one platform you can explore the whole world virtually',
         subtitle:
             'Quam quisque id diam vel quam elementum. Viverra nam libero justo laoreet sit amet cursus sit. Mauris in aliquam sem',
@@ -75,18 +78,18 @@ export const insights = [
 export const socials = [
     {
         name: 'twitter',
-        url: '/twitter.svg',
+        url: twitter,
     },
     {
         name: 'linkedin',
-        url: '/linkedin.svg',
+        url: linkedin,
     },
     {
         name: 'instagram',
-        url: '/instagram.svg',
+        url: instagram,
     },
     {
         name: 'facebook',
-        url: '/facebook.svg',
+        url: facebook,
     },
 ];
