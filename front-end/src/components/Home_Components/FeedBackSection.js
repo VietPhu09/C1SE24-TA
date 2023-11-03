@@ -44,7 +44,7 @@ const FeedBackSection = () => {
             </div>
             <div className='flex-1 flex items-center'>
                 <img src={earth} alt='earth' className=' h-52 w-52'/>
-                <span className='text-2xl font-semibold w-2/4 ml-5'>Trip Advisor always here to help you ! </span>
+                <span className='text-2xl font-semibold w-2/4 ml-5'>Trip Advisor alwayshere to help you ! </span>
             </div>
         </div>
     </div>

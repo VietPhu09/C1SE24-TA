@@ -34,12 +34,14 @@ const Header = () => {
     <header>
     <nav className="bg-white p-3 border-b-2">
         <div className="max-w-7xl mx-auto flex justify-between" >
-            {/* Ảnh Logo Trip Advisor */}
-            <div className="flex items-center md:space-x-2 space-x-3">
-                <img src={logo} alt="Trip Advisor Logo" className="w-8 h-8 md:w-12 md:h-12 text-5xl" />
-                {/* <SiTripadvisor className="text-5xl" /> */}
-                <span className="text-xl md:text-2xl font-bold">Trip Advisor</span>
-            </div>
+            <NavLink to='/'>
+                {/* Ảnh Logo Trip Advisor */}
+                <div className="flex items-center md:space-x-2 space-x-3">
+                    <img src={logo} alt="Trip Advisor Logo" className="w-8 h-8 md:w-12 md:h-12 text-5xl" />
+                    {/* <SiTripadvisor className="text-5xl" /> */}
+                    <span className="text-xl md:text-2xl font-bold">Trip Advisor</span>
+                </div>
+            </NavLink>
 
             {/* Các tiêu đề SeePost Discover About us */}
             <div className="hidden md:flex space-x-2 items-center font-semibold">
@@ -62,7 +64,10 @@ const Header = () => {
                         showMenu && (
                             <div className="absolute top-16 right-2 bg-white rounded-xl py-3 px-5">
                             <ul className=" text-base font-normal w-full ">
+                                <NavLink to='userprofile'>
                                 <li className=" hover:text-blue-600">View Profile</li>
+                                </NavLink>
+
                                 <li className="hover:text-red-600" onClick={handleLogout}>Log out</li>
                             </ul>
                         </div>
