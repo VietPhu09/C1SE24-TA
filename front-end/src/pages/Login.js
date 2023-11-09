@@ -13,7 +13,7 @@ export const Login = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const userData = useSelector(state => state)
-  const API ="http://127.0.0.1:8000/"
+  const API = "http://127.0.0.1:8000/"
   const [showPassword, setShowPassword] = useState(false)
   const [data, setData] = useState({
     username: "",
@@ -56,7 +56,7 @@ export const Login = () => {
           },
         })
         dispatch(loginRedux(dataRes))
-        // navigate('/')
+        navigate('/')
       }
       else if(dataRes.error)
         toast.error(dataRes.error)

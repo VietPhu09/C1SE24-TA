@@ -2,9 +2,17 @@ import React from 'react'
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import TripCard from './HomeCard/TripCard';
-import CarouselData from '../Home_Components/CarouselData'
+import {  useSelector } from 'react-redux';
 
 const HomeCarousel = () => {
+    const locationData = useSelector((state) => state.location.locationList)
+    // console.log(locationData)
+    // const data = locationData.map((item, index) => {
+    //     return(
+    //         item.tag.map((item, index) => {return item.name})
+    //     )
+    // })
+    // console.log(data)
     const responsive = {
         superLargeDesktop: {
             // the naming can be any, depends on you.
@@ -12,7 +20,7 @@ const HomeCarousel = () => {
             items: 5,
         },
         desktop: {
-            breakpoint: { max: 3000, min: 1024 },
+            breakpoint: { max: 3000, min: 1024 }, 
             items: 3,
         },
         tablet: {
@@ -25,13 +33,13 @@ const HomeCarousel = () => {
         },
     };
 
-    const tripCards = CarouselData.map((item) =>
+    const tripCards = locationData.map((item) =>
         <TripCard
             id={item.id}
-            name={item.namePlace}
-            url={item.imageUrl}
-            location={item.placeLocated}
-            stars={item.rateStarts}
+            name={item.name}
+            url = {item.image}
+            location={item.address}
+            tag={ item.tag.map((item, index) => {return item.name})}
         />)
 
     return (

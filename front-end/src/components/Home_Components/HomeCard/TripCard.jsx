@@ -1,19 +1,20 @@
 import React from 'react'
 import { AiFillStar } from 'react-icons/ai'
 import { FaLocationDot } from 'react-icons/fa6'
+import {AiOutlineHeart} from 'react-icons/ai'
 
 
 const TripCard = (props) => {
     return (
-        <div
-            class="block rounded-lg bg-white drop-shadow-md hover:drop-shadow-xl bg-white mx-4">
+        <div key={props.id}
+            className="block rounded-lg bg-white drop-shadow-md hover:drop-shadow-xl mx-4 relative">
             <a href="#!">
                 <img
-                    class="rounded-t-lg h-64 object-cover w-full"
+                    className="rounded-t-lg h-64 object-cover w-full"
                     src={props.url}
                     alt="" />
             </a>
-            <div class="p-6">
+            <div className="p-6">
                 <h5
                     class="mb-2 text-base font-medium leading-tight text-black">
                     {props.name}
@@ -28,6 +29,9 @@ const TripCard = (props) => {
                     </div>
                 </div>
 
+            </div>
+            <div className='absolute top-3 right-3 bg-white py-3 px-3 rounded-full cursor-pointer hover:bg-red-500'>
+                <AiOutlineHeart/>
             </div>
         </div>
     )
