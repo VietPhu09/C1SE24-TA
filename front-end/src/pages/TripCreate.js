@@ -1,11 +1,22 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import TripInfo from '../components/Trip_Create_Component/TripCreateCard/Trip_List_Component/TripInfo'
 import TripList from '../components/Trip_Create_Component/TripCreateCard/TripList'
 import TripCreateModel from '../components/Trip_Create_Component/TripCreateModel'
+import TripCancel from '../components/Trip_Create_Component/TripCancel'
+import Map from '../components/Trip_Create_Component/TripCreateCard/Map'
 
 import { useSelector } from 'react-redux'
+import toast from 'react-hot-toast'
+
+import { useNavigate } from 'react-router-dom'
+
+
 
 const TripCreate = () => {
+
+    const navigate = useNavigate()
+
+    const tripCreateAPI = 'http://127.0.0.1:8000/tripcreate/'
 
     const initialData = useSelector((state) => state.tripCreate)
     
@@ -16,8 +27,75 @@ const TripCreate = () => {
     }    
 
     const [isActive, setIsActive] = useState(false)
+    const [cancelIsActive, setCancelIsActive] = useState(false)
 
     const handleActive = () => {setIsActive((prev) => !prev)}
+    const handleCancelActive = () => {setCancelIsActive((prev) => !prev)}
+
+
+    const handleTripCreate = async(e) => {
+        e.preventDefault()
+        const data = {
+            name: initialData.name,
+            days: initialData.days,
+            user: initialData.user,
+            items: initialData.items.map((item) => {
+                return{
+                    ...item,
+                    day: item.day,
+                    locations: item.locations.map((location) => location.id)
+                }
+            })
+        }
+
+        if(data) {
+            const fetchData = await fetch(tripCreateAPI, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify(data)
+            })
+
+            const dataRes = await fetchData.json()
+            if(dataRes.message){
+                toast.success(dataRes.message)
+                navigate('/')
+            }
+            else if(dataRes.error)
+                toast.error(dataRes.error)
+        }
+    }
+
+    useEffect(() => {
+        const handleBeforeUnload = (e) => {
+          // Customize the confirmation message
+          const confirmationMessage = 'Are you sure you want to leave this page?';
+    
+          // Display the confirmation message when the user tries to reload or leave the page
+          e.returnValue = confirmationMessage;
+    
+          // Some additional action you want to perform before unloading the page
+          // For example, saving data, making an API call, etc.
+          // You can put your code here.
+    
+          // Note: Some browsers may not display the custom message.
+        };
+    
+        // Attach the beforeunload event handler when the component mounts
+        window.addEventListener('beforeunload', handleBeforeUnload);
+    
+        // Clean up the event listener when the component unmounts
+        return () => {
+          window.removeEventListener('beforeunload', handleBeforeUnload);
+        };
+      }, []);
+
+
+    //   Map
+
+    
+
 
   return (
     <div className='mt-8 mx-8 flex'>
@@ -26,6 +104,12 @@ const TripCreate = () => {
             <TripCreateModel
             active = {handleActive}
         />
+        }
+        {
+            cancelIsActive &&
+            <TripCancel
+                active= {handleCancelActive}
+            />
         }
         <div className='w-2/3 mx-8'>
             <div className='w-full'>
@@ -41,8 +125,14 @@ const TripCreate = () => {
                     active = {handleActive}
                 />
             </div>
+            <div className='flex items-center border-t border-t-slate-900 py-5 mb-10'>
+            <button onClick={handleTripCreate} className='mt-5 border border-slate-700 py-2 px-6 rounded-lg text-base font-bold text-slate-800 hover:bg-slate-900 hover:text-white'>Complete</button> 
+            <button onClick={handleCancelActive} className='mt-5 ml-12 border border-slate-700 py-2 px-6 rounded-lg text-base font-bold text-slate-800 hover:bg-slate-900 hover:text-white'>Cancel</button> 
+            </div>
         </div>
-        <div className='w-1/3 mx-8'>Hi</div>
+        <div className='w-1/3 mx-8 rounded-lg overflow-hidden '>
+            <Map/>
+        </div>
     </div>
   )
 }

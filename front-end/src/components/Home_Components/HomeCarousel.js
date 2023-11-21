@@ -3,6 +3,7 @@ import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import TripCard from './HomeCard/TripCard';
 import {  useSelector } from 'react-redux';
+import { NavLink } from 'react-router-dom';
 
 const HomeCarousel = () => {
     const locationData = useSelector((state) => state.location.locationList)
@@ -33,14 +34,19 @@ const HomeCarousel = () => {
         },
     };
 
+
     const tripCards = locationData.map((item) =>
-        <TripCard
-            id={item.id}
-            name={item.name}
-            url = {item.image}
-            location={item.address}
-            tag={ item.tag.map((item, index) => {return item.name})}
-        />)
+    <NavLink to={`/detail/${item.id}`}>
+    <TripCard
+                id={item.id}
+                name={item.name}
+                url = {item.image}
+                location={item.address}
+                tag={ item.tag.map((item, index) => {return item.name})}
+            />
+    </NavLink>
+    )
+       
 
     return (
         <Carousel responsive={responsive} className='mt-8 container mx-auto pb-6'>

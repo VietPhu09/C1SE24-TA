@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import loginrequired from '../../assets/HomeImg/loginrequired.png'
 import { FcGoogle } from 'react-icons/fc'
 import { BsFacebook } from 'react-icons/bs'
@@ -6,7 +6,34 @@ import {GrClose} from 'react-icons/gr'
 
 import { Link, NavLink } from 'react-router-dom'
 
+import { signInWithGoogle } from '../../firebase/firebaseconfig'
+import firebase from '../../firebase/firebaseconfig'
+import { auth } from '../../firebase/firebaseconfig'
+
 const LoginRequired = (props) => {
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const unsubscribe = firebase.auth().onAuthStateChanged((authUser) => {
+      if (authUser) {
+        // User is signed in.
+        setUser(authUser);
+      } else {
+        // User is signed out.
+        setUser(null);
+      }
+    });
+
+    return () => {
+      // Unsubscribe when the component unmounts.
+      unsubscribe();
+    };
+  }, []);
+
+  console.log(user)
+
+
+
   return (
     <div className='fixed inset-0 z-50 '>
         {/* Overlay */}
@@ -35,7 +62,7 @@ const LoginRequired = (props) => {
                       <span className=' h-px bg-slate-900 w-72'></span> <span className=' mx-2'>or</span> <span className=' h-px bg-slate-900 w-72'></span>
                     </div>
                     <div className='mt-5'>
-                      <button className='border border-slate-700 hover:border-slate-900 hover:bg-slate-100 py-5 w-full rounded-lg focus:outline-none relative '><FcGoogle className=' text-3xl absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2' /></button>
+                      <button onClick={signInWithGoogle} className='border border-slate-700 hover:border-slate-900 hover:bg-slate-100 py-5 w-full rounded-lg focus:outline-none relative '><FcGoogle className=' text-3xl absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2' /></button>
                       <button className='border border-slate-700 hover:border-slate-900 hover:bg-slate-100 py-5 w-full rounded-lg focus:outline-none relative mt-2 '><BsFacebook className=' text-3xl absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2' /></button>
                     </div>
                     <div>

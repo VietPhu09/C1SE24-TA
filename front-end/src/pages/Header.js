@@ -39,7 +39,7 @@ const Header = () => {
                 <div className="flex items-center md:space-x-2 space-x-3">
                     <img src={logo} alt="Trip Advisor Logo" className="w-8 h-8 md:w-12 md:h-12 text-5xl" />
                     {/* <SiTripadvisor className="text-5xl" /> */}
-                    <span className="text-xl md:text-2xl font-bold">Trip Advisor</span>
+                    <span className="text-xl md:text-2xl font-bold">Travel Advisor</span>
                 </div>
             </NavLink>
 

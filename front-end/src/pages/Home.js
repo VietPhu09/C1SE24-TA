@@ -17,8 +17,10 @@ import {  useSelector } from 'react-redux';
 
 
 
+
+
 export const Home = () => {
-  
+
   const user_id = useSelector((state) => state.user.id)
 
   const [isActive, setIsActive] = useState(false)

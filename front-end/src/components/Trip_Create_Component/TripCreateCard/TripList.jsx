@@ -1,7 +1,8 @@
-import React, {useRef} from 'react'
+import React, {useEffect, useRef} from 'react'
 import TripItem from './Trip_List_Component/TripItem'
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
+import { useSelector } from 'react-redux';
 
 const TripList = (props) => {
     const days = props.days
@@ -14,8 +15,14 @@ const TripList = (props) => {
     //       tripItemRefs[index].current.scrollIntoView({ behavior: 'smooth' });
     //     }
     //   };
+
+    // const dayList = useSelector((state) => state.tripCreate.dayList)
+
+    // console.log(dayList)
+
     
     const formatDateTripList = (input) => {
+
         const date = new Date(input)
         const options = {month: 'long', day: 'numeric'}
         return date.toLocaleDateString('en-US', options)
@@ -40,6 +47,15 @@ const TripList = (props) => {
             items: 1,
         },
     };
+
+    const ref = useRef([])
+
+    const handleScroll = (id) => {
+        const itemRef = ref.current[id-1]
+        if(itemRef) {
+            itemRef.scrollIntoView({behavior: 'smooth'})
+        }
+    }
 
 
     const buttonCarousel = days.map((item, index) => {

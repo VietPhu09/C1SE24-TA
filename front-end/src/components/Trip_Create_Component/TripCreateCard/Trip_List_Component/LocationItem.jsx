@@ -3,7 +3,7 @@ import img from '../../../../assets/img/hoian.jpg'
 import {GrLocation} from 'react-icons/gr'
 import trashcan from '../../../../assets/TripImg/trashbin.png'
 import { deleteLocationItem } from '../../../../redux/tripSlice'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 
 const LocationItem = (props) => {
 

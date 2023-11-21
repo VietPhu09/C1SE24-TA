@@ -21,6 +21,9 @@ const initialState = {
         }
     ],
     day: "",
+    active: false,
+    isDuplicate: false,
+    dayList: []
 }
 
 export const tripSlice = createSlice({
@@ -42,8 +45,19 @@ export const tripSlice = createSlice({
             const location = action.payload
             const day = location.day
             const findDay = state.items.find((item) => item.day === day);
-          
-            findDay && findDay.locations.push(location)
+            
+            // findDay && findDay.locations.push(location)
+            if(findDay) {
+              if(findDay.locations.find((item) => item.id == location.id)){
+                console.log('Trung r')
+                state.isDuplicate = true
+              }
+              else {
+                  state.isDuplicate = false
+                  findDay.locations.push(location)
+                }
+
+            }
             // return { ...state };
           },
           deleteLocationItem: (state, action) => {
@@ -86,13 +100,20 @@ export const tripSlice = createSlice({
               })
             }
 
+          },
+          activeButton: (state, action) => {
+            state.active = action.payload
+          },
+          setDayList: (state, action) => {
+            state.dayList = action.payload
+            console.log(action.payload)
           }
           
           
     }
 })
 
-export const {setTripData, setLocationItem, setDay, deleteLocationItem, updatedLocationOrder} = tripSlice.actions
+export const {setTripData, setLocationItem, setDay, deleteLocationItem, updatedLocationOrder, activeButton, setDayList} = tripSlice.actions
 
 export default tripSlice.reducer
 

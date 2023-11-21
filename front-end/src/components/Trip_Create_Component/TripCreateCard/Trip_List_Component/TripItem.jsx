@@ -1,10 +1,11 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import LocationItem from './LocationItem'
 
 import { useDispatch } from 'react-redux'
 import { updatedLocationOrder } from '../../../../redux/tripSlice'
 
 import { setDay } from '../../../../redux/tripSlice'
+import { setDayList } from '../../../../redux/tripSlice'
 
 import {DragDropContext, Droppable, Draggable} from 'react-beautiful-dnd'
 
@@ -13,8 +14,14 @@ const TripItem = (props) => {
 
     const dispatch = useDispatch()
 
+
     const data = props.data 
     const [getList, setGetList] = useState([])
+
+    // const dayList= data.items.map(item => item.day) 
+    // useEffect(() => {
+    //     dispatch(setDayList(dayList))
+    // },[])
 
     const handleGetList = (props) => {
       const findDay = data.items.find((item) => item.day === props)
@@ -82,6 +89,7 @@ const TripItem = (props) => {
                                 <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} onMouseDown={() => handleGetList(location.day)}>
                                   <LocationItem
                                     id={location.id}
+                                    url={location.image}
                                     name={location.name}
                                     address={location.address}
                                     day={location.day}

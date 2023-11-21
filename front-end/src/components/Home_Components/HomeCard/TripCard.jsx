@@ -2,11 +2,21 @@ import React from 'react'
 import { AiFillStar } from 'react-icons/ai'
 import { FaLocationDot } from 'react-icons/fa6'
 import {AiOutlineHeart} from 'react-icons/ai'
+import { activeButton } from '../../../redux/tripSlice'
+import { useDispatch } from 'react-redux'
 
 
 const TripCard = (props) => {
+
+    const dispatch = useDispatch()
+    
+    const hide = () => {
+        dispatch(activeButton(false))
+    }
+
     return (
         <div key={props.id}
+            onClick={hide}
             className="block rounded-lg bg-white drop-shadow-md hover:drop-shadow-xl mx-4 relative">
             <a href="#!">
                 <img

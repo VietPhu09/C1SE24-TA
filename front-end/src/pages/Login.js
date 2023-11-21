@@ -45,7 +45,6 @@ export const Login = () => {
       })
       const dataRes = await fetchData.json()
       console.log('user: ' + userData.user)
-      // console.log(dataRes)
       if(dataRes.message){
         toast.success(dataRes.message)
         toast(`Welcome back! ${dataRes.user.username}`,
