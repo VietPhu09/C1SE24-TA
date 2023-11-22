@@ -7,17 +7,17 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 //Root layout là nơi sẽ render ra giao diện của trang NavBar
 const RootLayout = () => {
-    const API = "http://127.0.0.1:8000/"
-    const dispatch = useDispatch()
-    const locationData = useSelector((state) => state.location)
-    useEffect(() => {
-        (async () => {
-            const res = await fetch(`${API}locations/`)
-            const resData = await res.json()
-            // console.log(resData)
-            dispatch(setDataLocation(resData))
-        })()
-    }, [])
+    // const API = "http://127.0.0.1:8000/"
+    // const dispatch = useDispatch()
+    // const locationData = useSelector((state) => state.location)
+    // useEffect(() => {
+    //     (async () => {
+    //         const res = await fetch(`${API}locations/`)
+    //         const resData = await res.json()
+    //         // console.log(resData)
+    //         dispatch(setDataLocation(resData))
+    //     })()
+    // }, [])
 
     return (
 
