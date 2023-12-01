@@ -1,0 +1,15 @@
+.custom-marker{
+    display: block;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    padding: 0;
+    position: relative;
+}
+
+.markerIndex{
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
