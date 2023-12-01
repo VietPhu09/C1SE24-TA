@@ -1,26 +1,18 @@
-import React, {useEffect, useRef} from 'react'
+import React, { useEffect, useState } from 'react'
 import TripItem from './Trip_List_Component/TripItem'
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
-import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { getLocationArray, setIndex } from '../../../redux/tripSlice';
 
 const TripList = (props) => {
+
+    const [active, setActive] = useState(false)
+
+    const dispatch = useDispatch()
     const days = props.days
     const data = props.data
-    // console.log(data)
-
-    // const tripItemRefs = Array.from({ length: days.length }, () => useRef(null));
-    // const handleScroll = (index) => {
-    //     if (tripItemRefs[index] && tripItemRefs[index].current) {
-    //       tripItemRefs[index].current.scrollIntoView({ behavior: 'smooth' });
-    //     }
-    //   };
-
-    // const dayList = useSelector((state) => state.tripCreate.dayList)
-
-    // console.log(dayList)
-
-    
+  
     const formatDateTripList = (input) => {
 
         const date = new Date(input)
@@ -48,13 +40,10 @@ const TripList = (props) => {
         },
     };
 
-    const ref = useRef([])
 
-    const handleScroll = (id) => {
-        const itemRef = ref.current[id-1]
-        if(itemRef) {
-            itemRef.scrollIntoView({behavior: 'smooth'})
-        }
+    const handleGetDay = (day, index) => {
+        dispatch(getLocationArray(day))
+        dispatch(setIndex(index))
     }
 
 
@@ -65,24 +54,61 @@ const TripList = (props) => {
                 <button 
                     key={index}
                     id={index} 
-                    className='hover:text-blue-600 text-lg font-semibold text-slate-800'>{formatDateTripList(item.day)}</button>
+                    className='hover:text-blue-600 text-lg font-semibold text-slate-800'
+                    onClick={() => handleGetDay(item.day, index)}
+                    >
+                        {formatDateTripList(item.day)}
+                    </button>
             )
             :
             (
                 <button 
                     key={index}
                     id={index} 
-                    className='hover:text-blue-600 text-lg font-semibold text-slate-800'>{formatDateTripList(item.day)}</button>
+                    className='hover:text-blue-600 text-lg font-semibold text-slate-800'
+                    onClick={() => handleGetDay(item.day, index)}
+                    >
+                        {formatDateTripList(item.day)}
+                    </button>
             )
         )
     })
+
+    useEffect(() => {
+        const handleScroll = () => {
+            if(document.documentElement.scrollTop >400) {
+                setActive(true)
+            }
+            else setActive(false)
+        }
+
+        window.addEventListener('scroll', handleScroll)
+
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+          };
+    }, [])
   return (
     <div className='my-8'>
-        <div className='border-b border-b-slate-900 pb-6'>
-            <Carousel responsive={responsive} className='container mx-auto'>
-                {buttonCarousel}
-            </Carousel>
-        </div>
+        {
+            !active ?
+            (
+                <div className='border-b border-b-slate-900 pb-6'>
+                    <Carousel responsive={responsive} className='container mx-auto'>
+                        {buttonCarousel}
+                    </Carousel>
+                </div>
+            )
+            :
+            (
+                <div className=' shadow-xl rounded-lg pb-6 py-4 sticky top-4 bg-white z-40 '>
+                    <Carousel responsive={responsive} className='container mx-auto'>
+                        {buttonCarousel}
+                    </Carousel>
+                </div>
+            )
+        }
+        
         <div>
             <TripItem
                 data = {data}    

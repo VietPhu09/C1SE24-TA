@@ -130,7 +130,7 @@ const TripCreate = () => {
             <button onClick={handleCancelActive} className='mt-5 ml-12 border border-slate-700 py-2 px-6 rounded-lg text-base font-bold text-slate-800 hover:bg-slate-900 hover:text-white'>Cancel</button> 
             </div>
         </div>
-        <div className='w-1/3 mx-8 rounded-lg overflow-hidden '>
+        <div className='w-1/3 h-full mx-8 mb-8 rounded-lg overflow-hidden sticky top-4 '>
             <Map/>
         </div>
     </div>

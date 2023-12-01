@@ -16,6 +16,7 @@ const initialState = {
                     day: "",
                     latitude: "",
                     longitude: "",
+                    category: ""
                 },
             ],
         }
@@ -23,7 +24,8 @@ const initialState = {
     day: "",
     active: false,
     isDuplicate: false,
-    dayList: []
+    index: "",
+    markerList: [],
 }
 
 export const tripSlice = createSlice({
@@ -35,6 +37,7 @@ export const tripSlice = createSlice({
             state.days = action.payload.days
             state.user = action.payload.user
             state.items = [...action.payload.items]
+            state.markerList = []
             console.log(action.payload)
         },
         setDay: (state,action) => {
@@ -49,12 +52,14 @@ export const tripSlice = createSlice({
             // findDay && findDay.locations.push(location)
             if(findDay) {
               if(findDay.locations.find((item) => item.id == location.id)){
-                console.log('Trung r')
                 state.isDuplicate = true
+                console.log('Trung r', state.isDuplicate)
               }
               else {
                   state.isDuplicate = false
+                  console.log('Khong trung', state.isDuplicate)
                   findDay.locations.push(location)
+                  console.log(location)
                 }
 
             }
@@ -104,16 +109,25 @@ export const tripSlice = createSlice({
           activeButton: (state, action) => {
             state.active = action.payload
           },
-          setDayList: (state, action) => {
-            state.dayList = action.payload
+          setIndex: (state, action) => {
+            state.index = action.payload
             console.log(action.payload)
+          },
+          getLocationArray: (state, action) => {
+            const day = action.payload
+            const findDay = state.items.find((item) => item.day === day)
+            if (findDay)
+            {
+              console.log(1)
+              state.markerList = [...findDay.locations]
+            }
           }
           
           
     }
 })
 
-export const {setTripData, setLocationItem, setDay, deleteLocationItem, updatedLocationOrder, activeButton, setDayList} = tripSlice.actions
+export const {setTripData, setLocationItem, setDay, deleteLocationItem, updatedLocationOrder, activeButton, setIndex, getLocationArray} = tripSlice.actions
 
 export default tripSlice.reducer
 

@@ -3,7 +3,7 @@ import {GrLocation} from 'react-icons/gr'
 import {ImAirplane} from 'react-icons/im'
 
 import {useDispatch, useSelector} from 'react-redux'
-import { setLocationItem, activeButton } from '../../../redux/tripSlice'
+import { setLocationItem, activeButton, getLocationArray } from '../../../redux/tripSlice'
 import { NavLink } from 'react-router-dom'
 
 import toast from 'react-hot-toast'
@@ -12,7 +12,6 @@ const LocationCard = (props) => {
 
     const dispatch = useDispatch()
     const day = useSelector((state) => state.tripCreate.day)
-    const test = useSelector((state) => state.tripCreate)
     const isDuplicate = useSelector((state) => state.tripCreate.isDuplicate)
 
     const tags = props.tags
@@ -26,10 +25,14 @@ const LocationCard = (props) => {
             url: data.url,
             latitude: data.latitude,
             longitude: data.longitude,
+            category: data.category,
             day: day
           };
         dispatch(setLocationItem(newData))
-        isDuplicate && toast.error('This item is already in your list to day!')
+        console.log(isDuplicate)
+        isDuplicate ? toast.error('This item is already in your list to day!') : toast.success(`Adding ${data.name} successfully!`)
+        dispatch(getLocationArray(day))
+        props.active()
     }
 
     const active = () => {

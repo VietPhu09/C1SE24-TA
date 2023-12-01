@@ -243,7 +243,16 @@ const LocationDetail = () => {
       }
       <div className='flex'>
         <div className='w-1/2 rounded-xl overflow-hidden relative'>
-          <img src={img} alt='location' className='w-full h-full object-cover'/>
+          {
+            locationDisplay.url ?
+            (
+              <img src={locationDisplay.image} alt='location' className='w-full h-full object-cover'/>
+            )
+            :
+            (
+              <img src={img} alt='location' className='w-full h-full object-cover'/>
+            )
+          }
           <div className='absolute flex items-center justify-between p-4 rounded-full bg-white top-1 right-1'>
             <span>Rating rate: 4.9</span>
           </div>

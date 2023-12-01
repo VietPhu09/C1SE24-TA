@@ -13,7 +13,6 @@ import { useDispatch} from 'react-redux';
 import {useNavigate} from 'react-router-dom'
 
 const TripInitalModel = (props) => {
-
     const user_id = props.user_id
 
     const dispatch = useDispatch()

@@ -2,7 +2,7 @@ import React from 'react'
 import img from '../../../../assets/img/hoian.jpg'
 import {GrLocation} from 'react-icons/gr'
 import trashcan from '../../../../assets/TripImg/trashbin.png'
-import { deleteLocationItem } from '../../../../redux/tripSlice'
+import { deleteLocationItem, getLocationArray } from '../../../../redux/tripSlice'
 import { useDispatch } from 'react-redux'
 
 const LocationItem = (props) => {
@@ -16,6 +16,7 @@ const LocationItem = (props) => {
 
     const handleDelete = () => {
         dispatch(deleteLocationItem(deleteLocation))
+        dispatch(getLocationArray(deleteLocation.day))
     }
   return (
     <div className=' cursor-pointer'>
@@ -27,10 +28,22 @@ const LocationItem = (props) => {
             </div>
             {/* Item info */}
             <div className='flex ml-8 relative'>
-                <div className='w-1/4 rounded-xl overflow-hidden'>
-                    <img src={img} alt='Trip Image' className='object-cover w-full h-full'/>
-                </div>
-                <div className='ml-5'>
+                {
+                    props.url ? 
+                    (
+                        <div className='w-1/4 rounded-xl overflow-hidden'>
+                            <img src={props.url} alt='Trip Image' className='object-cover w-full h-full'/>
+                        </div>
+                    )
+                    :
+                    (
+                        <div className='w-1/4 rounded-xl overflow-hidden'>
+                            <img src={img} alt='Trip Image' className='object-cover w-full h-full'/>
+                        </div>
+                    )
+                }
+               
+                <div className='ml-5 w-3/4'>
                     <h1 className='text-xl font-bold'>{props.name}</h1>
                     <div className='flex items-center'>
                         <GrLocation/>
