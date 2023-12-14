@@ -27,11 +27,11 @@ const LocationItem = (props) => {
                 <div class="border-l-2 border-dotted border-gray-400 w-0 h-full"></div>
             </div>
             {/* Item info */}
-            <div className='flex ml-8 relative'>
+            <div className='flex ml-8 relative w-full h-[150px]'>
                 {
                     props.url ? 
                     (
-                        <div className='w-1/4 rounded-xl overflow-hidden'>
+                        <div className='w-1/4 h-full rounded-xl overflow-hidden'>
                             <img src={props.url} alt='Trip Image' className='object-cover w-full h-full'/>
                         </div>
                     )

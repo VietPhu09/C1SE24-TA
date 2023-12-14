@@ -9,6 +9,7 @@ import FeedBackSection from '../components/Home_Components/FeedBackSection';
 import FAQSection from '../components/Home_Components/FAQSection';
 import Footer from '../components/Home_Components/Footer';
 
+
 import TripInitalModel from '../components/Trip_Create_Component/TripInitalModel';
 import LoginRequired from '../components/Home_Components/LoginRequired';
 
@@ -32,6 +33,7 @@ export const Home = () => {
   const activeLoginRequired = () => {
    setLoginRequiredActive((prev) => !prev)
   }
+  console.log('hi')
 
 
   return (

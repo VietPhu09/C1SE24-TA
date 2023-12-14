@@ -11,7 +11,7 @@ import LoginRequired from '../components/Home_Components/LoginRequired'
 
 import {useParams, useNavigate} from 'react-router-dom'
 import {useSelector, useDispatch} from 'react-redux'
-import { setLocationItem } from '../redux/tripSlice'
+import { setLocationItem, getLocationArray } from '../redux/tripSlice'
 
 import {AiOutlineArrowUp} from 'react-icons/ai'
 
@@ -31,16 +31,21 @@ const LocationDetail = () => {
 
   const [loginRequiredActive, setLoginRequiredActive] = useState(false)
   const [scrollTopButtonActive, setScrollTopButton] = useState(false)
+  const [choicesActive, setChoicesActive] = useState(false)
 
   const activeLoginRequired = () => {
     setLoginRequiredActive((prev) => !prev)
+   }
+
+   const handleActiveChoices = () => {
+    setChoicesActive((prev) => !prev)
    }
 
   const {filterby} = useParams()
   const locationDetail = useSelector((state) => state.location.locationList)
   const locationDisplay = locationDetail.filter(location => location.id ===parseInt(filterby))[0]
   const total = locationDisplay.positive+locationDisplay.negative+locationDisplay.neutral
-  const positivePoint = ((locationDisplay.positive/total)*100).toFixed(2)
+
 
   //Category
   const hotelCategory = locationDetail.filter(location => location.category.name === 'Hotel')
@@ -48,16 +53,6 @@ const LocationDetail = () => {
   const restaurantCategory = locationDetail.filter(location => location.category.name === 'Restaurant')
   const restaurant_id = restaurantCategory.map(item => item.id)
 
-
-
-
-
-
-
-  // hotelCategory.map((item, index) => {
-  //   console.log(((item.positive/(item.positive+item.negative+item.neutral))*100).toFixed(2))
-  // })
-  
   const pieDataSet = [
     ((locationDisplay.positive/total)*100).toFixed(2),
     ((locationDisplay.negative/total)*100).toFixed(2),
@@ -78,12 +73,80 @@ const LocationDetail = () => {
 
   const compareBarLables = locationDisplay.category.name === 'Hotel' ? hotelCategory.map(item => item.name) : restaurantCategory.map(item => item.name)
 
-  const compareBarDataSet = locationDisplay.category.name === 'Hotel' ? hotelCategory.map(item => ((item.positive/(item.positive+item.negative+item.neutral))*100).toFixed(2)) : restaurantCategory.map(item => ((item.positive/(item.positive+item.negative+item.neutral))*100).toFixed(2))
+  // Compare to other location
+  const tags = ['Positive','Convenient', 'Service', 'Yummy']
+  if(locationDisplay.category.name === 'Hotel') {tags.pop()}
+  const [compareLabel, setCompareLabel] = useState("Positive")
+  const positiveCompare = locationDisplay.category.name === 'Hotel' ? hotelCategory.map(item => ((item.positive/(item.positive+item.negative+item.neutral))*100).toFixed(2)) : restaurantCategory.map(item => ((item.positive/(item.positive+item.negative+item.neutral))*100).toFixed(2))
+  const positivePoint = ((locationDisplay.positive/total)*100).toFixed(2)
+  const [compareBarDataSet, setCompareBarDataSet] = useState([...positiveCompare])
+  const [comparePoint, setComparePoint] = useState(positivePoint)
+  const sortedPositivePoint = locationDisplay.category.name === 'Hotel' 
+    ? hotelCategory.map(item => ((item.positive/(item.positive+item.negative+item.neutral))*100).toFixed(2)).sort((a,b) => b-a) 
+    : restaurantCategory.map(item => ((item.positive/(item.positive+item.negative+item.neutral))*100).toFixed(2)).sort((a,b) => b-a)
+  const ranking = sortedPositivePoint.findIndex((value) => value === positivePoint)
+  const [rank, setRank] = useState(ranking)
+  console.log(compareLabel);
 
-  const sortedPositivePoint = locationDisplay.category.name === 'Hotel' ? hotelCategory.map(item => ((item.positive/(item.positive+item.negative+item.neutral))*100).toFixed(2)).sort((a,b) => b-a) : restaurantCategory.map(item => ((item.positive/(item.positive+item.negative+item.neutral))*100).toFixed(2)).sort((a,b) => b-a)
-  const rank = sortedPositivePoint.findIndex((value) => value === positivePoint)
+  
+  const handleSetCompareLabel = async(label) => {
+    setCompareLabel(label)
+    setChoicesActive((prev) => !prev)
+  }
+
+  useEffect(() => {
+  
+    if (compareLabel === 'Service') {
+      //Service points
+      const serviceCompare = locationDisplay.category.name === 'Hotel'
+        ? hotelCategory.map(item => ((item.service / item.positive) * 100).toFixed(2))
+        : restaurantCategory.map(item => ((item.service / item.positive) * 100).toFixed(2));
+      const servicePoint = ((locationDisplay.service/locationDisplay.positive)*100).toFixed(2)
+      //Ranking point
+      const sortedServicePoint = locationDisplay.category.name === 'Hotel' 
+      ? hotelCategory.map(item => ((item.service / item.positive) * 100).toFixed(2)).sort((a,b) => b-a) 
+      : restaurantCategory.map(item => ((item.service / item.positive) * 100).toFixed(2)).sort((a,b) => b-a)
+      const rank = sortedServicePoint.findIndex((value) => value === servicePoint)
+      setComparePoint(servicePoint)
+      setRank(rank)
+      setCompareBarDataSet([...serviceCompare]);
+    }
+    //convenient points
+    else if (compareLabel === 'Convenient') {
+      const convenientCompare = locationDisplay.category.name === 'Hotel'
+        ? hotelCategory.map(item => ((item.convenient / item.positive) * 100).toFixed(2))
+        : restaurantCategory.map(item => ((item.convenient / item.positive) * 100).toFixed(2));
+      const convenientPoint = ((locationDisplay.convenient/locationDisplay.positive)*100).toFixed(2)
+       //Ranking point
+       const sortedConvenientPoint = locationDisplay.category.name === 'Hotel' 
+       ? hotelCategory.map(item => ((item.convenient / item.positive) * 100).toFixed(2)).sort((a,b) => b-a) 
+       : restaurantCategory.map(item => ((item.convenient / item.positive) * 100).toFixed(2)).sort((a,b) => b-a)
+       const rank = sortedConvenientPoint.findIndex((value) => value === convenientPoint)
+      setComparePoint(convenientPoint)
+      setRank(rank)
+      setCompareBarDataSet([...convenientCompare]);
+    }
+    //yummy points
+    else if (compareLabel === 'Yummy') {
+      const yummyCompare = restaurantCategory.map(item => ((item.yummy / item.positive) * 100).toFixed(2));
+      const yummyPoint = ((locationDisplay.yummy/locationDisplay.positive)*100).toFixed(2)
+       //Ranking point
+       const sortedYummyPoint = restaurantCategory.map(item => ((item.yummy / item.positive) * 100).toFixed(2)).sort((a,b) => b-a)
+       const rank = sortedYummyPoint.findIndex((value) => value === yummyPoint)
+      setComparePoint(yummyPoint)
+      setRank(rank)
+      setCompareBarDataSet([...yummyCompare]);
+    }
+    //positive points 
+    else if (compareLabel === 'Positive') {
+      setCompareBarDataSet([...positiveCompare]);
+      setComparePoint(positivePoint)
+      setRank(ranking)
+    }
+  }, [compareLabel, comparePoint, positivePoint, ranking]);
 
 
+  //
   const airportDistanceDataSet = hotelCategory.map(item => item.airport_distance)
 
   const sortedAirportDistance = hotelCategory.map(item => item.airport_distance).sort((a,b) => a-b)
@@ -120,9 +183,11 @@ const LocationDetail = () => {
         url: locationDisplay.url,
         latitude: locationDisplay.latitude,
         longitude: locationDisplay.longitude,
+        category: locationDisplay.category.name,
         day: day
       };
     dispatch(setLocationItem(newData))
+    dispatch(getLocationArray(day))
     navigate('/tripcreate')
 
 }
@@ -179,7 +244,7 @@ const LocationDetail = () => {
     labels: compareBarLables,
     datasets: [
       {
-        label: 'positive',
+        label: compareLabel,
         data: compareBarDataSet,
         backgroundColor: 'rgba(255, 99, 132, 0.5)',
         hoverBackgroundColor: "#EC932F",
@@ -218,6 +283,7 @@ const LocationDetail = () => {
         label: 'airport distance',
         data: airportDistanceDataSet,
         backgroundColor: 'rgba(255, 99, 132, 0.5)',
+        hoverBackgroundColor: "#EC932F",
       },
     ],
   }
@@ -262,28 +328,28 @@ const LocationDetail = () => {
           <h1 className=' text-4xl font-bold text-slate-900'>{locationDisplay.name}</h1>
           {/* Category */}
           <p className='mt-3 text-2xl font-bold text-slate-900'>Category: 
-            <span className='text-xl font-semibold'> {locationDisplay.category.name}</span>
+            <span className='text-2xl font-semibold'> {locationDisplay.category.name}</span>
           </p>
           {/* Subcategory */}
           {
             locationDisplay.category.name === 'Hotel' &&
             <p className='mt-3 text-2xl font-bold text-slate-900'>Rating: 
-              <span className='text-xl font-semibold'>  {locationDisplay.subcategory} stars</span>
+              <span className='text-2xl font-semibold'>  {locationDisplay.subcategory} stars</span>
             </p>
           }
           {
             locationDisplay.category.name === 'Restaurant' &&
             <p className='mt-3 text-2xl font-bold text-slate-900'>Restaurant type: 
-              <span className='text-xl font-semibold'>  {locationDisplay.subcategory} </span>
+              <span className='text-2xl font-semibold'>  {locationDisplay.subcategory} </span>
             </p>
           }
           {/* Adress */}
-          <p className='mt-3 text-2xl font-bold text-slate-900'>Address: <span className='text-xl font-semibold'>{locationDisplay.address}</span></p>
+          <p className='mt-3 text-2xl font-bold text-slate-900'>Address: <span className='text-2xl font-semibold'>{locationDisplay.address}</span></p>
           {/* Airport Distance */}
           {
             locationDisplay.airport_distance !==0 &&
             <p className='mt-3 text-2xl font-bold text-slate-900'>Distance from airport: 
-              <span className='text-xl font-semibold'> {locationDisplay.airport_distance} km</span>
+              <span className='text-2xl font-semibold'> {locationDisplay.airport_distance} km</span>
             </p>
           }
           {/* Tag */}
@@ -330,7 +396,7 @@ const LocationDetail = () => {
         <h1 className=' text-4xl font-bold text-slate-900'>Analyze Result</h1>
               {/* Comment  */}
           <div className='mt-5 flex flex-col items-center'>
-            <div className='w-1/2 mb-10 '>
+            <div className='w-1/2 mb-10 mr-auto'>
               <Table
                 name = {'Comment Analyze'}
                 firtRowName = {'Positive'}
@@ -376,7 +442,7 @@ const LocationDetail = () => {
           {/* Tag */}
           <h1 className=' text-4xl font-bold text-slate-900 mt-12'>Evaluation of Convenient, Service {(locationDisplay.yummy ? ', and Yummy comments' : 'comments')} at {locationDisplay.name}</h1>
           <div className='mt-8 flex flex-col items-center'>
-            <div className='w-1/2'>
+            <div className='w-1/2 mr-auto'>
               <Table
                 name = {'Tags'}
                 firtRowName = {'Covenient'}
@@ -392,7 +458,7 @@ const LocationDetail = () => {
                 <small className='font-semibold'>Service stand for a dedicated and attentive staff.</small>
                 {
                   locationDisplay.yummy && 
-                <small className='font-semibold'>ummy stand for savoring a delectable, clean, and rich culinary experience that is not only delicious but also suitable for discerning tastes. Our offerings are prepared with care and expertise, ensuring every bite is a delectable and excellent delight for your palate.</small>
+                <small className='font-semibold'>yummy stand for savoring a delectable, clean, and rich culinary experience that is not only delicious but also suitable for discerning tastes. Our offerings are prepared with care and expertise, ensuring every bite is a delectable and excellent delight for your palate.</small>
                 }
               </div>
               
@@ -446,20 +512,73 @@ const LocationDetail = () => {
           {/* Positive comments */}
           <div className='mt-5 flex items-center justify-between'>
             <div className='w-1/3'>
-              <p class="text-lg text-slate-900 my-4">
-                With a remarkable 
-                <span class="text-blue-600 font-bold text-xl"> {positivePoint}% </span>
-                of positive comments, this place ranks among the top 
-                <span class="text-blue-600 font-bold text-xl"> {rank+1}</span>
-                <span class="text-green-600 font-semibold">
-                  {locationDisplay.category.name === 'Restaurant' && ' restaurants '} 
-                  {locationDisplay.category.name === 'Hotel' && ' hotels '} 
-                </span>
-                we've analyzed. It's our strong recommendation for your trip.
-              </p>
+            {
+              rank < 3 ? (
+                <p class="text-lg text-slate-900 my-4">
+                  With a remarkable 
+                  <span class="text-blue-600 font-bold text-xl"> {comparePoint}% </span>
+                  of {compareLabel} comments, this place ranks among the top 
+                  <span class="text-blue-600 font-bold text-xl"> {rank + 1}</span>
+                  <span class="text-green-600 font-semibold">
+                    {locationDisplay.category.name === 'Restaurant' && ' restaurants '} 
+                    {locationDisplay.category.name === 'Hotel' && ' hotels '} 
+                  </span>
+                  we've analyzed. It's our strong recommendation for your trip.
+                </p>
+              ) : rank + 1 > 10 ? (
+                <p class="text-lg text-slate-900 my-4">
+                  Unfortunately, despite being ranked at 
+                  <span class="text-blue-600 font-bold text-xl"> #{rank + 1} </span>
+                  with a commendable 
+                  <span class="text-blue-600 font-bold text-xl"> {comparePoint}% </span>
+                  of {compareLabel} comments, this place falls outside the top 10 rankings. 
+                  We recommend exploring other options for your trip.
+                </p>
+              ) : (
+                <p class="text-lg text-slate-900 my-4">
+                  Despite being ranked at 
+                  <span class="text-blue-600 font-bold text-xl"> #{rank + 1} </span>
+                  with a commendable 
+                  <span class="text-blue-600 font-bold text-xl"> {comparePoint}% </span>
+                  of {compareLabel} comments, this place falls just outside the top three. 
+                  Nevertheless, it's still a notable 
+                  <span class="text-green-600 font-semibold">
+                    {locationDisplay.category.name === 'Restaurant' && ' restaurant '} 
+                    {locationDisplay.category.name === 'Hotel' && ' hotel '} 
+                  </span>
+                  in our analysis. Consider it as a viable option for your trip.
+                </p>
+              )
+            }             
             </div>
             <div className='w-[800px] h-[400px]'>
-                <h1 className='text-2xl font-bold text-slate-900 mb-5'>Positive comments</h1>
+                {/* Filter button */}
+                <div className='w-1/4 relative mb-5'>
+                  {/* Drop down list */}
+                  <div>
+                    <button onClick={handleActiveChoices} type="button" className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
+                      Compare by
+                      <svg className="-mr-1 h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                        <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+                      </svg>
+                    </button>
+                  </div>
+                  {/* Choices */}
+                  {
+                    choicesActive && (
+                      <div className="absolute right-0 z-10 mt-2 w-52 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
+                        <div className="py-1" role="none">
+                          {
+                            tags.map((item, index) => (
+                              <button onClick={() => handleSetCompareLabel(item)} className="text-gray-700 block px-4 py-2 text-sm hover:bg-slate-200 w-full" role="menuitem" tabindex="-1" id={index}>{item}</button>
+                            ))
+                          }
+                        </div>
+                      </div>  
+                    )
+                  }         
+                </div>
+                <h1 className='text-2xl font-bold text-slate-900 mb-5'>{compareLabel} comments</h1>
                   <BarChart
                     data = {compareBarData}
                     options = {compareBarOptions}

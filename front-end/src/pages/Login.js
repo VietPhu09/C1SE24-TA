@@ -10,10 +10,11 @@ import {useDispatch, useSelector} from 'react-redux'
 import {loginRedux} from '../redux/userSlice'
 
 export const Login = () => {
+
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const userData = useSelector(state => state)
-  const API = "http://127.0.0.1:8000/"
+  const API = process.env.REACT_APP_SERVER_DOMAIN
   const [showPassword, setShowPassword] = useState(false)
   const [data, setData] = useState({
     username: "",

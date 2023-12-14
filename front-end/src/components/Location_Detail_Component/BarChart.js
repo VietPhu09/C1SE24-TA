@@ -31,6 +31,8 @@ const BarChart = (props) => {
 
   const chartRef = useRef();
   const onClick = (event) => {
+    try
+    {
     props.data.datasets[0].data.map((value, index) => {
       if(getElementAtEvent(chartRef.current, event)[0].index === index)
         {
@@ -44,7 +46,12 @@ const BarChart = (props) => {
         }      
         window.scrollTo({top:'0', behavior: 'smooth'})
     })
-  }
+  } 
+  catch(err)
+  {
+    console.error(err)
+  }      
+}
 
   
 

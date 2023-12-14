@@ -1,6 +1,8 @@
 import React from 'react'
 import {GrLocation} from 'react-icons/gr'
 import {ImAirplane} from 'react-icons/im'
+import { FaHotel } from "react-icons/fa";
+import { IoRestaurantSharp } from "react-icons/io5";
 
 import {useDispatch, useSelector} from 'react-redux'
 import { setLocationItem, activeButton, getLocationArray } from '../../../redux/tripSlice'
@@ -49,7 +51,7 @@ const LocationCard = (props) => {
         {/* Content */}
         <div className='flex flex-col justify-between w-2/4 h-5/6'>
             {/* Name */}
-            <NavLink to={`/detail/${props.id}`}>
+            <NavLink to={`/detail/${props.id}`} onClick={() => { window.scrollTo({top:0,behavior: 'smooth'})}}>
                 <div onClick={active} className='flex items-center hover:underline'>
                     <p className=' text-lg font-bold text-slate-800'>{props.name}</p>
                 </div>
@@ -70,9 +72,34 @@ const LocationCard = (props) => {
                 }
             </div>
             {/* Descriptoion */}
-            <div className='flex items-start mx-2'>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore</p>
-            </div>
+            {
+                props.category === 'Hotel' ?
+                (
+                <div className='flex items-start mx-2'>
+                    <FaHotel/>
+                    <p className=' text-sm text-slate-900 ml-2 font-semibold'>Hotel type: {props.subcategory} star</p>
+                </div>
+                )
+                :
+                (
+                    props.category === 'Restaurant' ?
+                    (
+                        <div className='flex items-start mx-2'>
+                            <IoRestaurantSharp />
+                            <p className=' text-sm text-slate-900 ml-2 font-semibold'>Restaurant type: {props.subcategory}</p>
+                        </div>
+                    )
+                    :
+                    (
+                        <div className='flex items-start mx-2'>
+                            <IoRestaurantSharp />
+                            <p className=' text-sm text-slate-900 ml-2 font-semibold'>Hotel type: {props.subcategory} star</p>
+                        </div>
+                    )
+                )
+
+            }
+            
             {/* Tags */}
             <div className='flex items-center'>
             {

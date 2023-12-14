@@ -11,7 +11,7 @@ import {toast} from 'react-hot-toast'
 
 export const SignUp = () => {
   const navigate = useNavigate()
-  const API = "http://127.0.0.1:8000/"
+  const API = process.env.REACT_APP_SERVER_DOMAIN
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setConfirmPassword] = useState(false)
   const [data, setData ]= useState({

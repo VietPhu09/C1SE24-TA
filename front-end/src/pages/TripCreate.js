@@ -16,7 +16,7 @@ const TripCreate = () => {
 
     const navigate = useNavigate()
 
-    const tripCreateAPI = 'http://127.0.0.1:8000/tripcreate/'
+    const tripCreateAPI = process.env.REACT_APP_SERVER_DOMAIN
 
     const initialData = useSelector((state) => state.tripCreate)
     
@@ -49,7 +49,7 @@ const TripCreate = () => {
         }
 
         if(data) {
-            const fetchData = await fetch(tripCreateAPI, {
+            const fetchData = await fetch(`${tripCreateAPI}tripcreate/`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

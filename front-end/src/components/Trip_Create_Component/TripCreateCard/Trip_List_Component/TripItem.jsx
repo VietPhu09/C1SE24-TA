@@ -4,7 +4,7 @@ import LocationItem from './LocationItem'
 import { useDispatch, useSelector } from 'react-redux'
 import { updatedLocationOrder } from '../../../../redux/tripSlice'
 
-import { setDay } from '../../../../redux/tripSlice'
+import { setDay, getLocationArray } from '../../../../redux/tripSlice'
 
 import {DragDropContext, Droppable, Draggable} from 'react-beautiful-dnd'
 
@@ -48,6 +48,7 @@ const TripItem = (props) => {
       items.splice(result.destination.index, 0, reorderdItem)
 
       dispatch(updatedLocationOrder(items))
+      dispatch(getLocationArray(items[0].day))
 
     }
 

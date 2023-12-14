@@ -4,7 +4,8 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 import './Map.css'
 import { useSelector } from 'react-redux';
 import restaurant from '../../../assets/Map/restaurant.png'
-import hotel from '../../../assets/Map/hotel.png'
+import hotel from '../../../assets/Map/hotel.jpg'
+import Loading from '../../Loading_Component/Loading'
 
 
 
@@ -16,12 +17,11 @@ const Map = () => {
   const [lng, setLng] = useState(108.19932539579814);
   const [lat, setLat] = useState(16.05734896197262);
   const [zoom, setZoom] = useState(12);
-  const bounds = [
-    [108.12510034866294, 16.182744632493126],
-    [108.35461158869451,15.842007748522835]
-  ]
+
+  const [loading, setLoading] = useState(false)
 
   const locationList = useSelector((state) => state.tripCreate.markerList)
+  console.log(locationList)
   console.log('im here')
  
   useEffect(() => {
@@ -97,7 +97,7 @@ const Map = () => {
       // Remove existing markers
       markers.forEach(marker => marker.remove());
     };
-  }, [lng, lat, zoom, locationList, bounds]);
+  }, [lng, lat, zoom, locationList]);
 
 
   const [viewport, setViewport] = useState({
@@ -111,51 +111,66 @@ const Map = () => {
 
   //Get direction
   const handleGetDirection = async() =>{
-    const query = await fetch(
-      `https://api.mapbox.com/directions/v5/mapbox/driving/${waypointsString}?steps=true&geometries=geojson&access_token=${token}`,
-      {
-         method: 'GET' 
-      }
-    )
-    const json = await query.json()
-    const data = json.routes[0]
-    const route = data.geometry.coordinates
-    console.log(data)
-    const geojson = {
-      type: 'Feature',
-      properties: {},
-      geometry: {
-        type: 'LineString',
-        coordinates: route
-      }
-    }
-
-    if(map.current.getSource('route')) {
-      map.current.getSource('route').setData(geojson)
-    }
-    else {
-      map.current.addLayer({
-        id: 'route',
-        type: 'line',
-        source: {
-          type: 'geojson',
-          data: geojson
-        },
-        layout: {
-          'line-join': 'round',
-          'line-cap': 'round'
-        },
-        paint: {
-          'line-color': '#3887be',
-          'line-width': 5,
-          'line-opacity': 0.75
+    setLoading(true)
+    try{
+      const query = await fetch(
+        `https://api.mapbox.com/directions/v5/mapbox/driving/${waypointsString}?steps=true&geometries=geojson&access_token=${token}`,
+        {
+           method: 'GET' 
         }
-      });
-    }
+      )
+      const json = await query.json()
+      const data = json.routes[0]
+      const route = data.geometry.coordinates
+      console.log(data)
+      const geojson = {
+        type: 'Feature',
+        properties: {},
+        geometry: {
+          type: 'LineString',
+          coordinates: route
+        }
+      }
+      if(map.current.getSource('route')) {
+        map.current.getSource('route').setData(geojson)
+      }
+      else {
+        map.current.addLayer({
+          id: 'route',
+          type: 'line',
+          source: {
+            type: 'geojson',
+            data: geojson
+          },
+          layout: {
+            'line-join': 'round',
+            'line-cap': 'round'
+          },
+          paint: {
+            'line-color': '#3887be',
+            'line-width': 5,
+            'line-opacity': 0.75
+          }
+        });
+      }
+    } catch (err) {console.error(err)}
+    finally {setLoading(false)}
+    
+
   }
   return (
     <div ref={mapContainer} className='w-full h-[90vh] relative'> 
       <button className=' absolute top-0 right-0 z-50' onClick={handleGetDirection}>Click me!</button>
+      {
+        loading && (
+          <div className='w-full h-full'>
+            <div class="absolute inset-0 bg-black opacity-50"></div>
+            <div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50'>
+              <Loading/>
+            </div>
+          </div>
+        )
+      }
     </div>
   )
 }
