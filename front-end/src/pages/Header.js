@@ -46,9 +46,8 @@ const Header = () => {
             {/* Các tiêu đề SeePost Discover About us */}
             <div className="hidden md:flex space-x-2 items-center font-semibold">
                 <NavLink to='/' className="transition duration-200 ease-in-out bg-transparent hover:bg-slate-100 text-black py-2 px-3 rounded-full hover:shadow-md">Home</NavLink>
-                <NavLink to='/Post' className="transition duration-200 ease-in-out bg-transparent hover:bg-slate-100 text-black py-2 px-3 rounded-full hover:shadow-md">See Post</NavLink>
                 <NavLink to='/About-us' className="transition duration-200 ease-in-out bg-transparent hover:bg-slate-100 text-black py-2 px-3 rounded-full hover:shadow-md">About us</NavLink>
-                <NavLink to='/Discover' className="transition duration-200 ease-in-out bg-transparent hover:bg-slate-100 text-black py-2 px-3 rounded-full hover:shadow-md">Discover</NavLink>
+                <NavLink to='/mytrip' className="transition duration-200 ease-in-out bg-transparent hover:bg-slate-100 text-black py-2 px-3 rounded-full hover:shadow-md">My Trips</NavLink>
             </div>
 
             {/* Các Buttons */}

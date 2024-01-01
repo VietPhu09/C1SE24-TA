@@ -3,6 +3,7 @@ import {GrLocation} from 'react-icons/gr'
 import {ImAirplane} from 'react-icons/im'
 import { FaHotel } from "react-icons/fa";
 import { IoRestaurantSharp } from "react-icons/io5";
+import { TfiMoney } from "react-icons/tfi";
 
 import {useDispatch, useSelector} from 'react-redux'
 import { setLocationItem, activeButton, getLocationArray } from '../../../redux/tripSlice'
@@ -15,11 +16,12 @@ const LocationCard = (props) => {
     const dispatch = useDispatch()
     const day = useSelector((state) => state.tripCreate.day)
     const isDuplicate = useSelector((state) => state.tripCreate.isDuplicate)
+    
 
     const tags = props.tags
     const data = props
 
-    const handelAddData = () => {
+    const HandelAddData = async() => {
         const newData = {
             id: data.id,
             name: data.name,
@@ -30,12 +32,13 @@ const LocationCard = (props) => {
             category: data.category,
             day: day
           };
-        dispatch(setLocationItem(newData))
-        console.log(isDuplicate)
+        await dispatch(setLocationItem(newData))
+        console.log('hello',isDuplicate)
         isDuplicate ? toast.error('This item is already in your list to day!') : toast.success(`Adding ${data.name} successfully!`)
         dispatch(getLocationArray(day))
         props.active()
     }
+    
 
     const active = () => {
         dispatch(activeButton(true))
@@ -92,8 +95,8 @@ const LocationCard = (props) => {
                     :
                     (
                         <div className='flex items-start mx-2'>
-                            <IoRestaurantSharp />
-                            <p className=' text-sm text-slate-900 ml-2 font-semibold'>Hotel type: {props.subcategory} star</p>
+                            <TfiMoney />
+                            <p className=' text-sm text-slate-900 ml-2 font-semibold'>Price: {props.subcategory} </p>
                         </div>
                     )
                 )
@@ -112,7 +115,7 @@ const LocationCard = (props) => {
         </div>
         {/* Add */}
         <div className='w-1/4 h-5/6 flex items-center'>
-            <button onClick={handelAddData} className='w-full h-full bg-green-400 rounded-xl text-white text-xl font-bold'>Add</button>
+            <button onClick={HandelAddData} className='w-full h-full bg-green-400 rounded-xl text-white text-xl font-bold hover:bg-green-700'>Add</button>
         </div>
     </div>
   )

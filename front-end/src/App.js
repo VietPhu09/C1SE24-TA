@@ -6,6 +6,9 @@ import { Login } from './pages/Login'
 import TripCreate from './pages/TripCreate'
 import UserProfile from '../src/components/UserProfile/UserProfile'
 import LocationDetail from "./pages/LocationDetail";
+import FavoriteLocations from "./pages/FavoriteLocations/FavoriteLocations";
+import MyTrip from "./pages/MyTrip";
+import SingleMytrip from "./components/My_Trip_Component/My_Trip_Detail/SingleMytrip";
 /*App là nơi chứa cách hoạt động của các Router 
 nơi điều khiển các component sẽ render khi gặp tên đường link tương ứng
 */
@@ -20,6 +23,9 @@ const router = createBrowserRouter(
       <Route path="userprofile" element={<UserProfile/>}></Route>
       <Route path="tripcreate" element={<TripCreate/>}></Route>
       <Route path="detail/:filterby" element={<LocationDetail/>}></Route>
+      <Route path="favorite" element={<FavoriteLocations/>}></Route>
+      <Route path = "mytrip" element={<MyTrip/>}></Route>
+      <Route path="mytripdetail/:filterby" element={<SingleMytrip/>}></Route>
     </Route>
   )
 )

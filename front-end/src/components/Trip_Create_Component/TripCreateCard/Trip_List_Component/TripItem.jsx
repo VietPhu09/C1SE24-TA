@@ -42,14 +42,20 @@ const TripItem = (props) => {
     }
 
     const handleOnDragEnd =(result) => {
-      
-      const items = Array.from(getList)
-      const [reorderdItem] = items.splice(result.source.index, 1)
-      items.splice(result.destination.index, 0, reorderdItem)
 
-      dispatch(updatedLocationOrder(items))
-      dispatch(getLocationArray(items[0].day))
+      try{
+        const items = Array.from(getList)
+        const [reorderdItem] = items.splice(result.source.index, 1)
+        items.splice(result.destination.index, 0, reorderdItem)     
 
+        console.log(items)
+        dispatch(updatedLocationOrder(items))
+        dispatch(getLocationArray(items[0].day))
+      }
+      catch(err)
+      {
+        console.error(err)
+      }
     }
 
 
@@ -57,7 +63,7 @@ const TripItem = (props) => {
     useEffect(() => {
       if (ref.current && indexRedux !== undefined)
       {
-        if (data.items[indexRedux]?.locations.length === 0) {
+        if (data.items[indexRedux]?.locations.length >= 0) {
             ref.current.scrollIntoView({ behavior: 'smooth' });
           }
       }

@@ -1,13 +1,15 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef, useCallback } from 'react'
 import LocationCard from './LocationCard/LocationCard'
 import {  useSelector } from 'react-redux';
 import {GrClose} from 'react-icons/gr'
+import './MultiRangeSlider/MultiRangeSlider.css'
 
 const TripCreateModel = (props) => {
 
   const locationData = useSelector((state) => state.location.locationList)
   const hotelList = locationData.filter(location => location.category.name === 'Hotel')
   const restaurantList = locationData.filter(location => location.category.name === 'Restaurant')
+  const sightSeeingList = locationData.filter(location => location.category.name === 'Sight Seeing')
 
   const [choicesActive, setChoicesActive] = useState(false)
   const handleActiveChoices = () => {
@@ -21,6 +23,41 @@ const TripCreateModel = (props) => {
     console.log(selectedValue)
   };
 
+  const [minVal, setMinVal] = useState(1);
+  const [maxVal, setMaxVal] = useState(5);
+  let min = 1
+  let max = 5
+  const minValRef = useRef(min);
+  const maxValRef = useRef(max);
+  const range = useRef(null);
+
+  // Convert to percentage
+  const getPercent = useCallback(
+    value => Math.round(((value - min) / (max - min)) * 100),
+    [min, max]
+  );
+
+  // Set width of the range to decrease from the left side
+  useEffect(() => {
+    const minPercent = getPercent(minVal);
+    const maxPercent = getPercent(maxValRef.current);
+
+    if (range.current) {
+      range.current.style.left = `${minPercent}%`;
+      range.current.style.width = `${maxPercent - minPercent}%`;
+    }
+  }, [minVal, getPercent]);
+
+  // Set width of the range to decrease from the right side
+  useEffect(() => {
+    const minPercent = getPercent(minValRef.current);
+    const maxPercent = getPercent(maxVal);
+
+    if (range.current) {
+      range.current.style.width = `${maxPercent - minPercent}%`;
+    }
+  }, [maxVal, getPercent]);
+
 
   const [listType, setListType] = useState(hotelList)
   const [selectedCategory, setSelectedCategory] = useState('Hotel');
@@ -28,6 +65,7 @@ const TripCreateModel = (props) => {
   const changeCategory = (category) => {
     if (category === 'Hotel') setListType(hotelList)
     if (category === 'Restaurant') setListType(restaurantList)
+    if (category === 'SightSeeing') setListType(sightSeeingList)
 
     setSelectedCategory(category)
   }
@@ -46,8 +84,7 @@ const TripCreateModel = (props) => {
               <div className='flex items-center'>
                   <button onClick={() => changeCategory('Hotel')} className={`py-1 px-4 border border-slate-400 rounded-lg mr-8 ${selectedCategory === 'Hotel' ? 'bg-slate-900 text-white' : ''} `}>Hotel</button>
                   <button onClick={() => changeCategory('Restaurant')} className={`py-1 px-4 border border-slate-400 rounded-lg mr-8 ${selectedCategory === 'Restaurant' ? 'bg-slate-900 text-white' : ''} `}>Restaurant</button>
-                  <button className='py-1 px-4 border border-slate-400 rounded-lg mr-8'>Sight Seeing</button>
-                  <button className='py-1 px-4 border border-slate-400 rounded-lg mr-8'>Hotel</button>
+                  <button onClick={() => changeCategory('SightSeeing')} className={`py-1 px-4 border border-slate-400 rounded-lg mr-8 ${selectedCategory === 'SightSeeing' ? 'bg-slate-900 text-white' : ''} `}>Sight Seeing</button>
               </div>                         
             </div>
                 <div className=' h-px bg-slate-400  mt-5'></div>
@@ -69,15 +106,32 @@ const TripCreateModel = (props) => {
                   {
                      choicesActive &&
                      (
-                      <div className='relative mb-5'>
-                          <input type="range" 
-                             min="1" 
-                             max="5" 
-                             defaultValue={selectedValue} 
-                             step="1" 
-                             class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
-                             onChange={handleChange}
-                             ></input>
+                      <div className='relative mb-5 mt-5 pb-5'>
+                        <input
+                          type="range"
+                          min={min}
+                          max={max}
+                          value={minVal}
+                          onChange={event => {
+                            const value = Math.min(Number(event.target.value), maxVal - 1);
+                            setMinVal(value);
+                            minValRef.current = value;
+                          }}
+                          className="thumb thumb--left"
+                          style={{ zIndex: minVal > max - 100 && "5" }}
+                        />
+                        <input
+                          type="range"
+                          min={min}
+                          max={max}
+                          value={maxVal}
+                          onChange={event => {
+                            const value = Math.max(Number(event.target.value), minVal + 1);
+                            setMaxVal(value);
+                            maxValRef.current = value;
+                          }}
+                          className="thumb thumb--right"
+                        />
                           <span class="text-sm text-gray-500 dark:text-gray-400 absolute start-0 -bottom-6">1</span>
                           <span class="text-sm text-gray-500 dark:text-gray-400 absolute start-1/4 -translate-x-1/2 rtl:translate-x-1/2 -bottom-6">2</span>
                           <span class="text-sm text-gray-500 dark:text-gray-400 absolute start-2/4 -translate-x-1/2 rtl:translate-x-1/2 -bottom-6">3</span>

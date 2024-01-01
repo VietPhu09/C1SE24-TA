@@ -10,6 +10,8 @@ import toast from 'react-hot-toast'
 
 import { useNavigate } from 'react-router-dom'
 
+import axios from 'axios'
+
 
 
 const TripCreate = () => {
@@ -48,23 +50,34 @@ const TripCreate = () => {
             })
         }
 
-        if(data) {
-            const fetchData = await fetch(`${tripCreateAPI}tripcreate/`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
+        if (data) {
+          const token = localStorage.getItem('accessToken')
+            try {
+              const response = await axios.post(
+                `${tripCreateAPI}tripcreate/`,
+                data,
+                {
+                  headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
                   },
-                  body: JSON.stringify(data)
-            })
-
-            const dataRes = await fetchData.json()
-            if(dataRes.message){
-                toast.success(dataRes.message)
-                navigate('/')
+                }
+              );
+          
+              const dataRes = response.data;
+          
+              if (dataRes.message) {
+                toast.success(dataRes.message);
+                navigate('/');
+              } else if (dataRes.error) {
+                toast.error(dataRes.error);
+              }
+            } catch (error) {
+              // Handle errors here
+              console.error(error);
+              toast.error("Login again!")
             }
-            else if(dataRes.error)
-                toast.error(dataRes.error)
-        }
+          }
     }
 
     useEffect(() => {

@@ -29,6 +29,7 @@ export const userSlice = createSlice({
             state.first_name = ""
             state.last_name = ""
             state.avatar = ""
+            localStorage.removeItem('accessToken')
         }
     }
 })

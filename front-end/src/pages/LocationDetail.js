@@ -296,6 +296,7 @@ const LocationDetail = () => {
       }
     }
   }
+  console.log(locationDisplay)
   
 
 
@@ -310,7 +311,7 @@ const LocationDetail = () => {
       <div className='flex'>
         <div className='w-1/2 rounded-xl overflow-hidden relative'>
           {
-            locationDisplay.url ?
+            locationDisplay.image ?
             (
               <img src={locationDisplay.image} alt='location' className='w-full h-full object-cover'/>
             )

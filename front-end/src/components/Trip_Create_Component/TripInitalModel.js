@@ -38,11 +38,17 @@ const TripInitalModel = (props) => {
 
     // Get all day
     const getDates = () => {
-        if(startDate && endDate) {
-            const dateBetween = eachDayOfInterval({start:startDate, end: endDate})
-            return dateBetween
+        try{
+            if(startDate && endDate) {
+                const dateBetween = eachDayOfInterval({start:startDate, end: endDate})
+                return dateBetween
+            }
+            return []
         }
-        return []
+        catch(err){
+            console.error(err)
+        }
+
     }
 
     // Format date to "yyyy-MM-dd"
@@ -93,11 +99,23 @@ const TripInitalModel = (props) => {
     },[getDates().length] )
    
     const handleOnchageStartDate = (date) => {
-        setStartDate(date)
+        try{
+            setStartDate(date)
+        }
+        catch(err){
+            console.error(err)
+        }
+
     }
 
     const handleOnchageEndDate = (date) => {
-        setEndDate(date)
+        try{
+            setEndDate(date)
+        }
+        catch(err){
+            console.error(err)
+        }
+
     }
 
     const handleOnchange = (e) => { 

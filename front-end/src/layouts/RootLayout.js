@@ -9,7 +9,6 @@ import { useEffect } from "react";
 const RootLayout = () => {
     const API = process.env.REACT_APP_SERVER_DOMAIN
     const dispatch = useDispatch()
-    const locationData = useSelector((state) => state.location)
     useEffect(() => {
         (async() => {
             const res = await fetch(`${API}locations/`)

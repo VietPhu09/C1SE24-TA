@@ -59,7 +59,6 @@ export const tripSlice = createSlice({
                   state.isDuplicate = false
                   console.log('Khong trung', state.isDuplicate)
                   findDay.locations.push(location)
-                  console.log(location)
                 }
 
             }
@@ -118,7 +117,7 @@ export const tripSlice = createSlice({
             const findDay = state.items.find((item) => item.day === day)
             if (findDay)
             {
-              console.log(1)
+              console.log(action.payload)
               state.markerList = [...findDay.locations]
             }
           }

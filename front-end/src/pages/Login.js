@@ -45,7 +45,7 @@ export const Login = () => {
         body: JSON.stringify(data)
       })
       const dataRes = await fetchData.json()
-      console.log('user: ' + userData.user)
+      console.log(dataRes)
       if(dataRes.message){
         toast.success(dataRes.message)
         toast(`Welcome back! ${dataRes.user.username}`,
@@ -56,6 +56,8 @@ export const Login = () => {
           },
         })
         dispatch(loginRedux(dataRes))
+        //store access token
+        localStorage.setItem('accessToken', dataRes.token.access)
         navigate('/')
       }
       else if(dataRes.error)

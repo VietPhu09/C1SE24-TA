@@ -6,6 +6,7 @@ import storage from 'redux-persist/lib/storage';
 import userSliceReducer from './userSlice';
 import locationReducer from './locationSlice';
 import tripReducer from './tripSlice';
+import myTripReducer from './mytripSlice'
 
 const persistConfig = {
   key: 'root',
@@ -18,6 +19,7 @@ const rootReducer = combineReducers(
     user: userSliceReducer,
     location: locationReducer,
     tripCreate: tripReducer,
+    myTrip: myTripReducer
   }
 )
 

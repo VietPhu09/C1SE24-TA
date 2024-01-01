@@ -101,7 +101,7 @@ const TripList = (props) => {
             )
             :
             (
-                <div className=' shadow-xl rounded-lg pb-6 py-4 sticky top-4 bg-white z-40 '>
+                <div className=' shadow-xl pb-6 py-4 sticky top-0 bg-white z-40 '>
                     <Carousel responsive={responsive} className='container mx-auto'>
                         {buttonCarousel}
                     </Carousel>

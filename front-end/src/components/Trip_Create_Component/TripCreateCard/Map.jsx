@@ -2,15 +2,26 @@ import React, {useState, useEffect, useRef} from 'react'
 import mapboxgl, { Popup } from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import './Map.css'
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import restaurant from '../../../assets/Map/restaurant.png'
 import hotel from '../../../assets/Map/hotel.jpg'
+import sight from '../../../assets/Map/sight.png'
 import Loading from '../../Loading_Component/Loading'
+import axios from 'axios'
+
+import { updatedLocationOrder, getLocationArray} from '../../../redux/tripSlice';
+
 
 
 
 
 const Map = () => {
+  
+  const dispatch = useDispatch()
+  const [distance, setDistance] = useState()
+  const [routeInfo, setRouteInfo] = useState(false)
+  const [showCalculateDistance, setShowCalculateDistance] = useState(true)
+
   const token = mapboxgl.accessToken = 'pk.eyJ1IjoidGllbmRhdGdsIiwiYSI6ImNscDB5eTcyODA5ZGwyaXBqNDFrZjg4d2wifQ.v201xmqTHSI9wQ0JlM3RdQ'
   const mapContainer = useRef(null);
   const map = useRef(null);
@@ -21,8 +32,9 @@ const Map = () => {
   const [loading, setLoading] = useState(false)
 
   const locationList = useSelector((state) => state.tripCreate.markerList)
-  console.log(locationList)
+  const itemIndex = useSelector((state) => state.tripCreate.index)
   console.log('im here')
+
  
   useEffect(() => {
     // Initialize map only once
@@ -55,6 +67,10 @@ const Map = () => {
       {
         marker.style.backgroundImage = `url(${restaurant})`;
       }
+      else if(item.category === "Sight Seeing")
+      {
+        marker.style.backgroundImage = `url(${sight})`
+      }
       marker.style.backgroundSize = '40px 40px'
       marker.style.width = '40px';
       marker.style.height = '40px';
@@ -83,12 +99,10 @@ const Map = () => {
 
       marker.addEventListener('mouseenter', () => {
         popup.addTo(map.current)
-        console.log('hover')
       })
 
       marker.addEventListener('mouseleave', () => {
         popup.remove()
-        console.log('unhover')
       })
     });
   
@@ -109,20 +123,38 @@ const Map = () => {
   const waypoints = locationList.map(item => [item.longitude, item.latitude])
   const waypointsString = waypoints.map(point => point.join(',')).join(';')
 
+      //remove layer direction
+      useEffect(() =>{
+        if(map.current.getLayer('route'))
+        {
+          map.current.removeLayer('route')
+          console.log('remove')
+        }
+        if(map.current.getSource('route')){
+          map.current.removeSource('route')
+          console.log('remove source')
+        }
+        setRouteInfo(false)
+      }, [itemIndex, locationList.length])
+
+      
+      useEffect(() => {
+        setShowCalculateDistance(true)
+        console.log('change')
+      },[ locationList])
+
   //Get direction
   const handleGetDirection = async() =>{
     setLoading(true)
     try{
-      const query = await fetch(
-        `https://api.mapbox.com/directions/v5/mapbox/driving/${waypointsString}?steps=true&geometries=geojson&access_token=${token}`,
-        {
-           method: 'GET' 
-        }
-      )
-      const json = await query.json()
-      const data = json.routes[0]
-      const route = data.geometry.coordinates
+      const response = await axios.get(
+        `https://api.mapbox.com/directions/v5/mapbox/driving/${waypointsString}?steps=true&geometries=geojson&access_token=${token}`
+      );
+    
+      const data = response.data.routes[0];
+      const route = data.geometry.coordinates;
       console.log(data)
+      setDistance(data.distance)
       const geojson = {
         type: 'Feature',
         properties: {},
@@ -152,25 +184,262 @@ const Map = () => {
             'line-opacity': 0.75
           }
         });
+        setRouteInfo(true)
       }
     } catch (err) {console.error(err)}
-    finally {setLoading(false)}
+    finally {setLoading(false); setShowCalculateDistance(false)}
+  
+  }
+
+  const handleOptimizing = async() => {
+    const matrixToken = 'pk.eyJ1IjoidGllbmRhdGdsIiwiYSI6ImNscDB5cjMxODBkbHYycnFveG9oMW02czQifQ.1Gvp-oFUgvHOKCU1VmkSrw'
+    try {
+      //call api
+      setLoading(true);
+      const response = await axios.get(`https://api.mapbox.com/directions-matrix/v1/mapbox/driving/${waypointsString}?access_token=${matrixToken}`);
+      const durations = response.data.durations;
+      console.log('data', response.data)
+      console.log(durations);
+      //get distance
+      class Graph {
+        constructor() {
+            this.vertices = [];
+            this.edges = {};
+        }
+
+        addVertex(vertex) {
+            this.vertices.push(vertex);
+            this.edges[vertex] = {};
+        }
+
+        addEdge(vertex1, vertex2, distance) {
+            this.edges[vertex1][vertex2] = distance;
+            this.edges[vertex2][vertex1] = distance;
+        }
+
+        createGraphFromDurations(durations) {
+          // Lấy số lượng đỉnh
+          const numVertices = durations[0].length;
+      
+          // Tạo đỉnh
+          for (let i = 0; i < numVertices; i++) {
+              const vertex = i + 1; // Sử dụng số thay vì ký tự
+              this.addVertex(vertex);
+          }
+      
+          // Thêm cạnh từ mảng durations
+          for (let i = 0; i < numVertices; i++) {
+              for (let j = i + 1; j < numVertices; j++) {
+                  const vertex1 = i + 1;
+                  const vertex2 = j + 1;
+                  const distance = Number(durations[i][j]);
+      
+                  if (!isNaN(distance)) {
+                      this.addEdge(vertex1, vertex2, distance);
+                  } else {
+                      console.error(`Invalid distance value at (${i}, ${j}).`);
+                  }
+              }
+          }
+      }      
+
+      generateRandomPath() {
+        const shuffledVertices = this.vertices.slice(); // Copy danh sách đỉnh để không làm thay đổi danh sách chính
+        shuffledVertices.shift(); // Loại bỏ đỉnh xuất phát (đỉnh 1) khỏi danh sách
+        for (let i = shuffledVertices.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [shuffledVertices[i], shuffledVertices[j]] = [shuffledVertices[j], shuffledVertices[i]];
+        }
+        return [1, ...shuffledVertices]; // Thêm đỉnh xuất phát và kết thúc vào đầu và cuối lộ trình
+    }
     
 
+        calculateTotalDistance(path) {
+            let totalDistance = 0;
+
+            for (let i = 0; i < path.length - 1; i++) {
+                const currentVertex = path[i];
+                const nextVertex = path[i + 1];
+                totalDistance += this.edges[currentVertex][nextVertex];
+            }
+
+            return totalDistance;
+        }
+
+        runGeneticAlgorithm(iterations) {
+          let bestPath = null;
+          let minDistance = Infinity;
+          const visitedPaths = new Set(); // Sử dụng Set để lưu trữ các lộ trình đã thăm
+      
+          for (let i = 0; i < iterations; i++) {
+              const randomPath = this.generateRandomPath();
+              const pathKey = randomPath.join(','); // Chuyển đổi mảng thành chuỗi để so sánh
+            
+              // Kiểm tra xem lộ trình đã được thăm chưa
+              if (!visitedPaths.has(pathKey)) {
+                  const distance = this.calculateTotalDistance(randomPath);
+                  if (distance < minDistance) {
+                      minDistance = distance;
+                      bestPath = randomPath;
+                  }
+      
+                  // Thêm lộ trình vào danh sách đã thăm
+                  visitedPaths.add(pathKey);
+              }
+          }
+      
+          return { path: bestPath, totalDistance: minDistance };
+      }
+      
+    }
+
+    //tinh lo trinh ngan nhat
+    const graph = new Graph();
+
+    graph.createGraphFromDurations(durations);
+    console.log("Vertices:", graph.vertices);
+    console.log("Edges:", graph.edges);
+
+    const { path, totalDistance } = graph.runGeneticAlgorithm(10000);
+
+    if (path) {
+        const formattedPath = path.join(' -> ');
+        console.log(`Lộ trình ngắn nhất là ${path} with total distance ${totalDistance} km`);
+    } else {
+        console.log('Không có lộ trình hợp lệ.');
+    }
+
+    //dua ra lo trinh thich hop
+    const waypointsArray = waypointsString.split(';')
+    //sap xep lai
+    const reorderArray = path.map(index => waypointsArray[index-1])
+    console.log('array', reorderArray)
+
+    //tao chuoi request string moi
+    const waypointsStringOptimizing = reorderArray.join(';') 
+
+    
+
+    //new direction
+    const directionResponse = await axios.get(
+      `https://api.mapbox.com/directions/v5/mapbox/driving/${waypointsStringOptimizing}?steps=true&geometries=geojson&access_token=${token}`
+    );
+  
+    const data = directionResponse.data.routes[0];
+    const route = data.geometry.coordinates;
+    console.log(data)
+    setDistance(data.distance)
+    const geojson = {
+      type: 'Feature',
+      properties: {},
+      geometry: {
+        type: 'LineString',
+        coordinates: route
+      }
+    }
+    if(map.current.getSource('route')) {
+      map.current.getSource('route').setData(geojson)
+    }
+    else {
+      map.current.addLayer({
+        id: 'route',
+        type: 'line',
+        source: {
+          type: 'geojson',
+          data: geojson
+        },
+        layout: {
+          'line-join': 'round',
+          'line-cap': 'round'
+        },
+        paint: {
+          'line-color': '#3887be',
+          'line-width': 5,
+          'line-opacity': 0.75
+        }
+      });
+    }
+
+    //rearrange
+    console.log(reorderArray)
+    //convert old array to new array
+    const newReorderArray = reorderArray.map(item =>{
+      const [longitude, latitude] = item.split(',')
+      return [longitude, latitude]
+    })
+
+    const sortedData = locationList.slice().sort((a, b) => {
+      const keyA = newReorderArray.findIndex(coords => coords[0] === a.longitude && coords[1] === a.latitude);
+      const keyB = newReorderArray.findIndex(coords => coords[0] === b.longitude && coords[1] === b.latitude);
+      return keyA - keyB;
+  });
+
+  //save to redux
+  dispatch(updatedLocationOrder(sortedData))
+  dispatch(getLocationArray(sortedData[0].day))
+
+
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
   }
+
+  const formatDateTripList = (input) => {
+
+    try{
+      const date = new Date(input)
+      const options = {month: 'long', day: 'numeric'}
+      return date.toLocaleDateString('en-US', options)
+    }
+    catch(err){console.error(err)}
+
+}
   return (
-    <div ref={mapContainer} className='w-full h-[90vh] relative'> 
-      <button className=' absolute top-0 right-0 z-50' onClick={handleGetDirection}>Click me!</button>
+      <div className=' relative h-screen'>
+      <div ref={mapContainer} className='w-full h-[90vh]'> 
       {
-        loading && (
-          <div className='w-full h-full'>
-            <div class="absolute inset-0 bg-black opacity-50"></div>
-            <div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50'>
-              <Loading/>
-            </div>
+        routeInfo && (
+          <div className=' absolute top-0 left-0 bg-white shadow-md ml-2 mt-2 py-2 px-4 z-50 rounded-md'>
+            {
+              locationList.length > 0 && (
+                <>
+                <p className='text-lg font-medium text-slate-900'>{formatDateTripList(locationList[0].day)} route :</p>
+                <p className='text-lg font-medium text-slate-900'>Locations: <span className=' text-blue-500'>{locationList.length}</span></p>
+                <p className='text-lg font-medium text-slate-900'>Distance: <span className=' text-blue-500'>{(distance/1000).toFixed(1)}</span> km </p>
+                </>
+              )
+            }       
           </div>
         )
-      }
+      }     
+        {
+          loading && (
+            <div className='w-full h-full'>
+              <div class="absolute inset-0 bg-black opacity-50"></div>
+              <div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50'>
+                <Loading/>
+              </div>
+            </div>
+          )
+        }
+      </div>
+      {
+        locationList.length > 1 && (
+          showCalculateDistance ?(
+            <div className='absolute bottom-8 left-0 z-50 w-full flex items-center justify-between'>
+              <button className=' w-full border py-4 px-4 bg-green-600 text-white font-semibold hover:bg-green-700' onClick={handleGetDirection}>Calculate Distance</button>
+            </div> 
+          )
+          :
+          (
+            <div className='absolute bottom-8 left-0 z-50 w-full flex items-center justify-between'>
+            <button className=' w-full border py-4 px-4 bg-green-600 text-white font-semibold hover:bg-green-700' onClick={handleOptimizing}>Optimizing</button>
+          </div> 
+          )
+        )
+      }   
     </div>
   )
 }
