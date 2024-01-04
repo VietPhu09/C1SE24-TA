@@ -26,6 +26,7 @@ const initialState = {
     isDuplicate: false,
     index: "",
     markerList: [],
+    tempLocations: []
 }
 
 export const tripSlice = createSlice({
@@ -120,13 +121,17 @@ export const tripSlice = createSlice({
               console.log(action.payload)
               state.markerList = [...findDay.locations]
             }
+          },
+          storeTempLocations : (state, action) => {
+            state.tempLocations = [...action.payload]
+            console.log(action.payload)
           }
           
           
     }
 })
 
-export const {setTripData, setLocationItem, setDay, deleteLocationItem, updatedLocationOrder, activeButton, setIndex, getLocationArray} = tripSlice.actions
+export const {setTripData, setLocationItem, setDay, deleteLocationItem, updatedLocationOrder, activeButton, setIndex, getLocationArray, storeTempLocations} = tripSlice.actions
 
 export default tripSlice.reducer
 

@@ -320,9 +320,9 @@ const LocationDetail = () => {
               <img src={img} alt='location' className='w-full h-full object-cover'/>
             )
           }
-          <div className='absolute flex items-center justify-between p-4 rounded-full bg-white top-1 right-1'>
+          {/* <div className='absolute flex items-center justify-between p-4 rounded-full bg-white top-1 right-1'>
             <span>Rating rate: 4.9</span>
-          </div>
+          </div> */}
         </div>
         <div className='w-1/2 mx-8 flex flex-col justify-between'>
           {/* Name */}
@@ -393,6 +393,10 @@ const LocationDetail = () => {
         </div>
       </div>
       {/* Analyze Result */}
+      {/* Check if it is sight seeing */}
+      {
+        locationDisplay.category.name !== "Sight Seeing" && (
+
       <div className='mt-8'>
         <h1 className=' text-4xl font-bold text-slate-900'>Analyze Result</h1>
               {/* Comment  */}
@@ -613,6 +617,8 @@ const LocationDetail = () => {
           </div>
           }
       </div>
+        )
+      }
      {
       scrollTopButtonActive &&
       <div className='fixed right-5 bottom-5 hover:bottom-8 transition-all duration-300 ease-in-out'>

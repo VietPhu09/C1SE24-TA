@@ -13,3 +13,32 @@
     right: 0;
 }
 
+@keyframes jump {
+    0%, 20%, 50%, 80%, 100% {
+      transform: translateY(0); /* Starting and ending position */
+    }
+    40% {
+      transform: translateY(-10px); /* Jump up */
+    }
+    60% {
+      transform: translateY(-5px); /* Jump down */
+    }
+  }
+  
+  .jumping-button {
+    width: 100%;
+    padding: 16px;
+    background-color: #16a34a;
+    color: #fff;
+    font-weight: 600; /* Your existing font styles */
+    transition: background-color 0.3s;
+    animation: jump 1s infinite; /* Jumping animation */
+  }
+  
+  .jumping-button:hover {
+    background-color: #15803d; /* Adjust the hover background color */
+    animation: none; /* Stop the jump animation on hover */
+  }
+  
+  
+

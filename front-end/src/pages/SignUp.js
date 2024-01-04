@@ -166,13 +166,13 @@ export const SignUp = () => {
 
           <button type='submit' className='w-full  m-auto py-3 bg-indigo-500 hover:bg-indigo-600 cursor-pointer text-white text-xl font-medium text-center  rounded-xl mt-5'>Sign Up</button>
         </form>
-        <div className='flex justify-around items-center'>
+        {/* <div className='flex justify-around items-center'>
           <span className=' h-px bg-slate-900 w-72'></span> <span className=' mx-2'>or</span> <span className=' h-px bg-slate-900 w-72'></span>
         </div>
         <div className='mt-5 w-full flex justify-around'>
           <button className='border border-slate-700 hover:border-slate-900 hover:bg-slate-100 py-2 px-20 rounded-lg focus:outline-none '><FcGoogle className=' text-4xl' /></button>
           <button className='border border-slate-700 hover:border-slate-900 hover:bg-slate-100 py-2 px-20 rounded-lg focus:outline-none '><BsFacebook className=' text-4xl' /></button>
-        </div>
+        </div> */}
         <p className='text-left text-lg mt-2'>Already have account ? <Link to={'/login'} className='text-indigo-500 underline text-lg'>Login</Link></p>
       </div>
     </div>

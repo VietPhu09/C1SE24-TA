@@ -4,6 +4,8 @@ import {ImAirplane} from 'react-icons/im'
 import { FaHotel } from "react-icons/fa";
 import { IoRestaurantSharp } from "react-icons/io5";
 import { TfiMoney } from "react-icons/tfi";
+import { IoIosArrowForward } from "react-icons/io";
+
 
 import {useDispatch, useSelector} from 'react-redux'
 import { setLocationItem, activeButton, getLocationArray } from '../../../redux/tripSlice'
@@ -114,8 +116,16 @@ const LocationCard = (props) => {
 
         </div>
         {/* Add */}
-        <div className='w-1/4 h-5/6 flex items-center'>
-            <button onClick={HandelAddData} className='w-full h-full bg-green-400 rounded-xl text-white text-xl font-bold hover:bg-green-700'>Add</button>
+        <div className='w-1/4 h-full flex items-center justify-center'>
+        <button
+            onClick={HandelAddData}
+            className='relative w-full h-full rounded-xl text-slate-900 text-xl font-semibold flex items-center justify-center overflow-hidden group'
+            >
+            <span className="relative z-10 transition-transform transform translate-x-0 group-hover:translate-x-10">Add to list</span>
+            <IoIosArrowForward className='h-10 w-10 ml-8 text-slate-900 transition-transform transform translate-x-0 group-hover:translate-x-full'/>
+            <span className="absolute inset-0transform origin-left scale-x-0 transition-transform group-hover:scale-x-100"></span>
+        </button>
+
         </div>
     </div>
   )

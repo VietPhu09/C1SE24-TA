@@ -92,56 +92,6 @@ const TripCreateModel = (props) => {
                   <span className='text-lg font-bold'>Top Recomendation</span>
                 </div>
                 {/* Dropdonw */}
-                <div className=' w-1/6 relative mb-5'>
-                  {/* Drop down list */}
-                  <div>
-                    <button onClick={handleActiveChoices} type="button" className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
-                      Hotel Star
-                      <svg className="-mr-1 h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                        <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
-                      </svg>
-                    </button>
-                  </div>
-                  {/* Choices */}
-                  {
-                     choicesActive &&
-                     (
-                      <div className='relative mb-5 mt-5 pb-5'>
-                        <input
-                          type="range"
-                          min={min}
-                          max={max}
-                          value={minVal}
-                          onChange={event => {
-                            const value = Math.min(Number(event.target.value), maxVal - 1);
-                            setMinVal(value);
-                            minValRef.current = value;
-                          }}
-                          className="thumb thumb--left"
-                          style={{ zIndex: minVal > max - 100 && "5" }}
-                        />
-                        <input
-                          type="range"
-                          min={min}
-                          max={max}
-                          value={maxVal}
-                          onChange={event => {
-                            const value = Math.max(Number(event.target.value), minVal + 1);
-                            setMaxVal(value);
-                            maxValRef.current = value;
-                          }}
-                          className="thumb thumb--right"
-                        />
-                          <span class="text-sm text-gray-500 dark:text-gray-400 absolute start-0 -bottom-6">1</span>
-                          <span class="text-sm text-gray-500 dark:text-gray-400 absolute start-1/4 -translate-x-1/2 rtl:translate-x-1/2 -bottom-6">2</span>
-                          <span class="text-sm text-gray-500 dark:text-gray-400 absolute start-2/4 -translate-x-1/2 rtl:translate-x-1/2 -bottom-6">3</span>
-                          <span class="text-sm text-gray-500 dark:text-gray-400 absolute start-3/4 -translate-x-1/2 rtl:translate-x-1/2 -bottom-6">4</span>
-                          <span class="text-sm text-gray-500 dark:text-gray-400 absolute end-0 -translate-x-1/2 rtl:translate-x-1/2 -bottom-6">5</span>
-                      </div>
-                        
-                     )
-                  }   
-                </div>
               <div className=''>
                {
                 listType.map((item, index) =>

@@ -8,6 +8,7 @@ import hotel from '../../../assets/Map/hotel.jpg'
 import sight from '../../../assets/Map/sight.png'
 import Loading from '../../Loading_Component/Loading'
 import axios from 'axios'
+import { storeTempLocations } from '../../../redux/tripSlice';
 
 import { updatedLocationOrder, getLocationArray} from '../../../redux/tripSlice';
 
@@ -19,6 +20,9 @@ const Map = () => {
   
   const dispatch = useDispatch()
   const [distance, setDistance] = useState()
+  const [newDistance, setNewDistance] = useState()
+  const [showDistance, setShowDistance] = useState(false)
+  const [showNewDistance, setShowNewDistance] = useState(false)
   const [routeInfo, setRouteInfo] = useState(false)
   const [showCalculateDistance, setShowCalculateDistance] = useState(true)
 
@@ -187,13 +191,15 @@ const Map = () => {
         setRouteInfo(true)
       }
     } catch (err) {console.error(err)}
-    finally {setLoading(false); setShowCalculateDistance(false)}
+    finally {setLoading(false); setShowCalculateDistance(false); setShowNewDistance(false); setShowDistance(true)}
   
   }
 
   const handleOptimizing = async() => {
     const matrixToken = 'pk.eyJ1IjoidGllbmRhdGdsIiwiYSI6ImNscDB5cjMxODBkbHYycnFveG9oMW02czQifQ.1Gvp-oFUgvHOKCU1VmkSrw'
     try {
+      //set temp location list
+      dispatch(storeTempLocations(locationList))
       //call api
       setLoading(true);
       const response = await axios.get(`https://api.mapbox.com/directions-matrix/v1/mapbox/driving/${waypointsString}?access_token=${matrixToken}`);
@@ -328,7 +334,7 @@ const Map = () => {
     const data = directionResponse.data.routes[0];
     const route = data.geometry.coordinates;
     console.log(data)
-    setDistance(data.distance)
+    setNewDistance(data.distance)
     const geojson = {
       type: 'Feature',
       properties: {},
@@ -382,7 +388,7 @@ const Map = () => {
     } catch (err) {
       console.error(err);
     } finally {
-      setLoading(false);
+      setLoading(false); setShowNewDistance(true)
     }
   }
 
@@ -396,22 +402,63 @@ const Map = () => {
     catch(err){console.error(err)}
 
 }
+
+  //keep old locations
+  const oldLocation = useSelector((state) => state.tripCreate.tempLocations)
+  const handleKeepOldLocation = () => {
+    dispatch(updatedLocationOrder(oldLocation))
+    dispatch(getLocationArray(oldLocation[0].day))
+    setShowNewDistance(false)
+  }
+  const handleKeepNewLocation = () => {
+    setShowDistance(false)
+  }
   return (
       <div className=' relative h-screen'>
       <div ref={mapContainer} className='w-full h-[90vh]'> 
       {
         routeInfo && (
-          <div className=' absolute top-0 left-0 bg-white shadow-md ml-2 mt-2 py-2 px-4 z-50 rounded-md'>
-            {
-              locationList.length > 0 && (
-                <>
-                <p className='text-lg font-medium text-slate-900'>{formatDateTripList(locationList[0].day)} route :</p>
-                <p className='text-lg font-medium text-slate-900'>Locations: <span className=' text-blue-500'>{locationList.length}</span></p>
-                <p className='text-lg font-medium text-slate-900'>Distance: <span className=' text-blue-500'>{(distance/1000).toFixed(1)}</span> km </p>
-                </>
-              )
-            }       
-          </div>
+          <>
+          {
+            showDistance && (
+              <div className=' absolute top-0 left-0 bg-white shadow-md ml-2 mt-2 py-2 px-4 z-50 rounded-md'>
+                {
+                  locationList.length > 0 && (
+                    <>
+                    <p className='text-lg font-medium text-blue-500'>{formatDateTripList(locationList[0].day)} route :</p>
+                    <p className='text-lg font-medium text-slate-900'>Locations: <span className=' text-blue-500'>{locationList.length}</span></p>
+                    <p className='text-lg font-medium text-slate-900'>Distance: <span className=' text-blue-500'>{(distance/1000).toFixed(1)}</span> km </p>
+                    {
+                      showNewDistance && (
+                        <div className='flex items-center justify-between w-full'>
+                          <button onClick={handleKeepOldLocation} className=' w-full px-5 rounded-md text-white text-lg font-medium bg-green-600 hover:bg-green-700 hover:border-green-700'>Keep</button>
+                        </div>
+                      )
+                    }
+                    </>
+                  )
+                }       
+              </div>    
+            )
+          }
+          
+          {showNewDistance && (
+             <div className=' absolute top-0 right-2 bg-white shadow-md ml-2 mt-2 py-2 px-4 z-50 rounded-md'>
+             {
+               locationList.length > 0 && (
+                 <>
+                 <p className='text-lg font-medium text-red-500'>New {formatDateTripList(locationList[0].day)} route :</p>
+                 <p className='text-lg font-medium text-slate-900'>Locations: <span className=' text-blue-500'>{locationList.length}</span></p>
+                 <p className='text-lg font-medium text-slate-900'>Distance: <span className=' text-red-500 text-xl font-semibold'>{(newDistance/1000).toFixed(1)}</span> km </p>
+                 <div className='flex items-center justify-between w-full'>
+                    <button onClick={handleKeepNewLocation} className=' w-full px-5 rounded-md text-white text-lg font-medium bg-green-600 hover:bg-green-700 hover:border-green-700'>Acept</button>
+                 </div>
+                 </>
+               )
+             }       
+           </div>
+          )}
+          </>    
         )
       }     
         {
@@ -435,7 +482,7 @@ const Map = () => {
           :
           (
             <div className='absolute bottom-8 left-0 z-50 w-full flex items-center justify-between'>
-            <button className=' w-full border py-4 px-4 bg-green-600 text-white font-semibold hover:bg-green-700' onClick={handleOptimizing}>Optimizing</button>
+            <button className='jumping-button' onClick={handleOptimizing}>Optimizing</button>
           </div> 
           )
         )
